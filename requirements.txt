@@ -1,0 +1,10 @@
+Django==1.7.3
+Pillow==2.7.0
+argparse==1.2.1
+django-registration-redux==1.1
+-e git://github.com/maxicecilia/django_site_news.git@e4a27ace4d03d8706bbeae4410a146249cf67033#egg=django_site_news-master
+django-sitesutils==0.1.2
+django-sitetree==1.2.1
+ipdb==0.8
+ipython==2.3.1
+wsgiref==0.1.2

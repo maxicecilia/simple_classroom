@@ -1,0 +1,11 @@
+{{user.username}}
+
+{% if profile_type == "student" %}
+    soy un estudiante.
+    {{ profile.cx }}
+{% elif profile_type == "teacher" %}
+    soy un profesor
+    {{ profile.abstract }}
+{% else %}
+    Who am I????
+{% endif %}

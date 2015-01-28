@@ -1,0 +1,18 @@
+{% extends "core/base.html" %}
+
+{% block main-content %}
+    <div class="ContenidoTitulo">Cartelera de Novedades</div>
+    <table width="100%" cellspacing="0" border="0">
+      <tr>
+        <td colspan="2" class="TablaNormal">Hasta el d&iacute;a {{lastUpdate}}, se dictaron {{horasTeoria}} horas de clase te&oacute;rica, 
+      y {{horasPractica}} horas de clase pr&aacute;ctica, lo que totaliza <b>{{ horasTotal }} horas</b> en el semestre.</td>
+      </tr>
+
+      {% for article in news %}
+      <tr>
+        <td valign="top" align="left">{{ article.date|date:"d/m/y" }}</td>
+        <td align="left">{{ article.body|default:article.snippet }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+{% endblock %}

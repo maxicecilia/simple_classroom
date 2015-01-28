@@ -1,0 +1,1 @@
+Use this: {{activation_key}}, you have {{expiration_days}} days to join {{site.name}}
