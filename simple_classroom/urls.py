@@ -1,10 +1,11 @@
+# -*- coding: utf-8 -*-
 from django.conf import settings
 from django.conf.urls import patterns, include, url
 from django.conf.urls.static import static
 from django.contrib import admin
 
 from apps.classroom.views import HomeView, ProfileView
-from apps.core.forms import StudentRegistrationForm
+from apps.classroom.forms import StudentRegistrationForm
 from registration.backends.simple.views import RegistrationView
 
 urlpatterns = patterns(
