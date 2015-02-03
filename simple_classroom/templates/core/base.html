@@ -1,4 +1,4 @@
-{% load sitetree %}
+{% load sitetree staticfiles %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -19,46 +19,33 @@
     <![endif]-->
     <!-- end bootstrap -->
     {% block main_css %}
-    <link rel="stylesheet" href="/static/css/style.css">
-    <link rel="stylesheet" href="/static/css/theme_arqcom.css">
+    <link rel="stylesheet" href="{% static "css/style.css" %}">
     {% endblock %}
     {% block extra_css %}{% endblock %}
 </head>
 
 <body>
-    <div id="main-title" class="row">
-      <div class="main-header">
-        <h2 class="text-left"><em>{{ site.extendedsite.menu.title }}</em></h2>
-        <h5 class="text-left">Facultad de Ciencias Exactas y Tecnolog&iacute;a <a href="/admin/" target="Contenido">-</a> Universidad Nacional de Tucum&aacute;n</h5>
-    </div>
-    </div>
-    <div class="row">
-      <div class="col-sm-2">
-        <div class="sidebar-nav">
-          {% block sidebar %}
-          <div class="navbar navbar-inverse" role="navigation">
-            <div class="navbar-header">
-              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-navbar-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-              </button>
-              <span class="visible-xs navbar-brand">{{ site.name }}</span>
-            </div>
-            {% block menu %}
-            <div class="navbar-collapse collapse sidebar-navbar-collapse">
-                {% sitetree_menu from menu_name include "trunk,topmenu" template "sitetree/menu_bootstrap3.html"  %}
-            </div><!--/.nav-collapse -->
-            {% endblock %}
-          </div>
-          {% endblock %}
-        </div>
+  {% block sidebar %}
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">{{ site.extendedsite.menu.title }}</a>
       </div>
-      <div id="main-content" class="col-sm-10">
-        {% block main-content %}{% endblock %}
-      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        {% sitetree_menu from menu_name include "trunk,topmenu" template "sitetree/menu_bootstrap3.html"  %}
+      </div><!--/.nav-collapse -->
+    </nav>
+  {% endblock %}
+  <div class="container">
+    <div id="main-content" class="col-sm-12">
+      {% block main-content %}{% endblock %}
     </div>
+  </div>
 
 {% block main_js %}
   <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.0/jquery.min.js" type="text/javascript"></script>

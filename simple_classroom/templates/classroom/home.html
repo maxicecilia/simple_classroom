@@ -1,17 +1,17 @@
 {% extends "core/base.html" %}
 
 {% block main-content %}
-    <div class="ContenidoTitulo">Cartelera de Novedades</div>
-    <table width="100%" cellspacing="0" border="0">
-      <tr>
-        <td colspan="2" class="TablaNormal">Hasta el d&iacute;a {{lastUpdate}}, se dictaron {{horasTeoria}} horas de clase te&oacute;rica, 
-      y {{horasPractica}} horas de clase pr&aacute;ctica, lo que totaliza <b>{{ horasTotal }} horas</b> en el semestre.</td>
-      </tr>
-
+    <div class="page-header">
+        <h1>Cartelera de Novedades<br/>
+        <h4>Hasta el d&iacute;a {{lastUpdate|default:"25/10/2015"}}, se dictaron {{horasTeoria|default:5}} horas de clase te&oacute;rica, 
+      y {{horasPractica|default:12}} horas de clase pr&aacute;ctica, lo que totaliza <b>{{ horasTotal|default:17 }} horas</b> en el semestre.</h4>
+      </h1>
+    </div>
+    <table class="table table-striped table-bordered table-condensed">
       {% for article in news %}
       <tr>
-        <td valign="top" align="left">{{ article.date|date:"d/m/y" }}</td>
-        <td align="left">{{ article.body|default:article.snippet }}</td>
+        <td class="{% if article.date == now %}success{% endif %}">{{ article.date|date:"d/m/y" }}</td>
+        <td class="{% if article.date == now %}success{% endif %}">{{ article.body|default:article.snippet }}</td>
       </tr>
       {% endfor %}
     </table>

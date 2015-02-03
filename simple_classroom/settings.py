@@ -43,6 +43,7 @@ INSTALLED_APPS = (
     'apps.core',
     'site_news',
     'sitetree',
+    'bootstrap3',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -102,6 +103,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.request',
 
     'sitesutils.context_processors.site',
+    'apps.core.context_processors.sitetree',
 )
 
 TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'simple_classroom/templates')]

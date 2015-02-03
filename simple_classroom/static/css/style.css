@@ -1,49 +1,8 @@
 /* Global reset */
 
 body {
-   font-family: Ubuntu, sans-serif;
-}
-
-/* make sidebar nav vertical */
-@media (min-width: 768px) {
-  .navbar {
-    border: 0;
-  }
-  .sidebar-nav .navbar .navbar-collapse {
-    padding: 0;
-    max-height: none;
-  }
-  .sidebar-nav .navbar ul {
-    float: none;
-    display: block;
-  }
-  .sidebar-nav .navbar li {
-    float: none;
-    display: block;
-  }
-  .sidebar-nav .navbar li a {
-    padding-top: 12px;
-    padding-bottom: 12px;
-  }
-}
-
-@media (max-width: 768px) {
-  .main-header {
-    display: none;
-  }
-}
-
-.main-header {
-  padding: 1px 2% 1px 40px;
-  background: #D1CDCD;
-}
-
-.nav-highlight {
-  color: #555;
-  background-color: #D1CDCD;
-  padding-top: 12px;
-  padding-bottom: 12px;
-  padding-left: 15px;
+  font-family: Ubuntu, sans-serif;
+  padding-top: 55px;
 }
 
 .section-title {
@@ -57,4 +16,8 @@ body {
 .date {
   font-weight: bold;
   padding-right: 20px;
+}
+
+div.navbar-collapse {
+    margin-right: 20px;
 }

@@ -1,8 +1,19 @@
+{% extends "core/base.html" %}
+{% load bootstrap3 %}
 
-
-<form action="/accounts/register/" method="POST">
-    {% csrf_token %}
-    {{form}}
-    <button type="submit">Go!</button>
-</form>
-
+{% block main-content %}
+<div class="row">
+    <div class="col-md-6 col-md-offset-2">
+        <form action="/accounts/register/" method="POST">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            {% buttons %}
+                <button type="submit" class="btn btn-default">
+                    {% bootstrap_icon "star" %} Registrarme
+                </button>
+            {% endbuttons %}
+        </form>
+        <a href="/accounts/login/">¿Ya estás registrado?</a>
+    </div>
+</div>
+{% endblock %}

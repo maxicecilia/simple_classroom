@@ -1,3 +1,4 @@
+{% load staticfiles %}
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -59,7 +60,7 @@ body{
  <div class="wrap">
     <div class="logo">
             <p>OOPS! - No hay nada para ver aquí</p>
-            <img src="/static/img/404.png"/>
+            <img src="{% static "img/404.png" %}"/>
             <div class="sub">
               <p><a href="#">Back </a></p>
             </div>

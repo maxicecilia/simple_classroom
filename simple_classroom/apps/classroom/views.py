@@ -1,4 +1,7 @@
+# -*- coding: utf-8 -*-
+import datetime
 from django.contrib.auth.decorators import login_required
+from django.http import Http404
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.utils.decorators import method_decorator
@@ -10,12 +13,10 @@ class HomeView(View):
     template_name = 'classroom/home.html'
 
     def get(self, request, *args, **kwargs):
-        site = request.site
-        news = NewsItem.objects_published.get_latest_by_site(site=site)
-        menu_name = site.extendedsite.menu.alias
+        news = NewsItem.objects_published.get_latest_by_site(site=request.site)
         return render_to_response(
             self.template_name,
-            RequestContext(self.request, {'site': site, 'news': news, 'menu_name': menu_name})
+            RequestContext(self.request, {'news': news, 'now': datetime.datetime.now().date()})
         )
 
 
@@ -23,10 +24,6 @@ class ProfileView(View):
     template_name = 'classroom/profile.html'
 
     def get(self, request, *args, **kwargs):
-        site = request.site
-        news = NewsItem.objects_published.get_latest_by_site(site=site)
-        menu_name = site.extendedsite.menu.alias
-
         try:
             profile = request.user.studentprofile
             profile_type = 'student'
@@ -35,12 +32,11 @@ class ProfileView(View):
                 profile = request.user.teacherprofile
                 profile_type = 'teacher'
             except:
-                profile = None
-                profile_type = None
+                raise Http404("Profile not found")
 
         return render_to_response(
             self.template_name,
-            RequestContext(self.request, {'site': site, 'news': news, 'menu_name': menu_name, 'profile': profile, 'profile_type': profile_type})
+            RequestContext(self.request, {'profile': profile, 'profile_type': profile_type})
         )
 
     @method_decorator(login_required)
