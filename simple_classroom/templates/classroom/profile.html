@@ -1,11 +1,65 @@
-{{user.username}}
+{% extends "core/base.html" %}
 
-{% if profile_type == "student" %}
-    soy un estudiante.
-    {{ profile.cx }}
-{% elif profile_type == "teacher" %}
-    soy un profesor
-    {{ profile.abstract }}
-{% else %}
-    Who am I????
-{% endif %}
+{% block main-content %}
+    <div class="page-header">
+        <h2>{{user.get_full_name}}</h2>
+    </div>
+    {% if profile_type == "student" %}
+        <div class="panel panel-default">
+          <div class="panel-heading">Información Personal</div>
+          <div class="panel-body">
+            <p>CX: {{profile.cx}}</p>
+            <p>Teléfono: {{profile.telephone}}</p>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading">Inscripciones habilitadas</div>
+          <div class="panel-body">
+            <ul>
+            {% for dictation in available_dictations %}
+                <li>{{ dictation }} <a class='enroll-trigger' href="{% url 'enroll_student' dictation.id profile.id %}">Inscribirme!</a></li>
+            {% endfor %}
+            </ul>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading">Cursados actuales</div>
+          <div class="panel-body">
+            <ul>
+            {% for enroll in current_enrollments %}
+                <li>{{ enroll.dictation }}</li>
+            {% endfor %}
+            </ul>
+          </div>
+        </div>
+
+    {% elif profile_type == "teacher" %}
+        soy un profesor
+        {{ profile.abstract }}
+    {% else %}
+        Who am I????
+    {% endif %}
+
+{% endblock %}
+
+{% block extra_js %}
+<script type="text/javascript">
+  $(document).ready(function() {
+        $('body').on('click', '.enroll-trigger', function(event) {
+            event.preventDefault();
+            $.ajax({
+              type: "POST",
+              url: this.href,
+              data: {csrfmiddlewaretoken:'{{csrf_token}}'},
+              success: function(response) {
+                alert("Se ha inscripto con éxito");
+                window.location = window.location;
+              },
+              error: function(response) {
+                alert("Something went wrong. Please, call 911.");
+              }
+            });
+        });
+    });
+</script>
+{% endblock %}

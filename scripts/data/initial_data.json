@@ -1,0 +1,170 @@
+[
+{
+    "fields": {
+        "domain": "catedra",
+        "name": "C\u00e1tedra de Arq. de Comp. y Sistemas con Microproc."
+    },
+    "model": "sites.site",
+    "pk": 1
+},
+{
+    "fields": {
+        "domain": "arqcom",
+        "name": "Arquitectura de Computadoras"
+    },
+    "model": "sites.site",
+    "pk": 2
+},
+{
+    "fields": {
+        "domain": "procesadores",
+        "name": "Sistemas con Microprocesadores"
+    },
+    "model": "sites.site",
+    "pk": 3
+},
+{
+    "fields": {
+        "alias": "arqcom",
+        "title": "Arquitectura de Computadoras"
+    },
+    "model": "sitetree.tree",
+    "pk": 1
+},
+{
+    "fields": {
+        "alias": "procesadores",
+        "title": "Sistemas con microprocesadores"
+    },
+    "model": "sitetree.tree",
+    "pk": 2
+},
+{
+    "fields": {
+        "alias": "catedra",
+        "title": "C\u00e1tedra"
+    },
+    "model": "sitetree.tree",
+    "pk": 3
+},
+{
+    "fields": {
+        "parent": null,
+        "access_restricted": false,
+        "access_permissions": [],
+        "description": "",
+        "insitetree": true,
+        "hint": "",
+        "url": "/arqcom/",
+        "inbreadcrumbs": true,
+        "title": "Novedades",
+        "tree": 1,
+        "access_perm_type": 1,
+        "alias": null,
+        "sort_order": 1,
+        "inmenu": true,
+        "access_loggedin": false,
+        "hidden": false,
+        "urlaspattern": false,
+        "access_guest": false
+    },
+    "model": "sitetree.treeitem",
+    "pk": 1
+},
+{
+    "fields": {
+        "parent": null,
+        "access_restricted": false,
+        "access_permissions": [],
+        "description": "",
+        "insitetree": true,
+        "hint": "",
+        "url": "/arqcom/",
+        "inbreadcrumbs": true,
+        "title": "Arquitectura de Computadoras",
+        "tree": 3,
+        "access_perm_type": 1,
+        "alias": null,
+        "sort_order": 2,
+        "inmenu": true,
+        "access_loggedin": false,
+        "hidden": false,
+        "urlaspattern": false,
+        "access_guest": false
+    },
+    "model": "sitetree.treeitem",
+    "pk": 2
+},
+{
+    "fields": {
+        "parent": null,
+        "access_restricted": false,
+        "access_permissions": [],
+        "description": "",
+        "insitetree": true,
+        "hint": "",
+        "url": "/procesadores/",
+        "inbreadcrumbs": true,
+        "title": "Sistemas con microprocesadores",
+        "tree": 3,
+        "access_perm_type": 1,
+        "alias": null,
+        "sort_order": 3,
+        "inmenu": true,
+        "access_loggedin": false,
+        "hidden": false,
+        "urlaspattern": false,
+        "access_guest": false
+    },
+    "model": "sitetree.treeitem",
+    "pk": 3
+},
+{
+    "fields": {
+        "parent": null,
+        "access_restricted": false,
+        "access_permissions": [],
+        "description": "",
+        "insitetree": true,
+        "hint": "",
+        "url": "/procesadores/",
+        "inbreadcrumbs": true,
+        "title": "Novedades",
+        "tree": 2,
+        "access_perm_type": 1,
+        "alias": null,
+        "sort_order": 4,
+        "inmenu": true,
+        "access_loggedin": false,
+        "hidden": false,
+        "urlaspattern": false,
+        "access_guest": false
+    },
+    "model": "sitetree.treeitem",
+    "pk": 4
+},
+{
+    "fields": {
+        "menu": 1,
+        "site": 2
+    },
+    "model": "core.extendedsite",
+    "pk": 1
+},
+{
+    "fields": {
+        "menu": 3,
+        "site": 1
+    },
+    "model": "core.extendedsite",
+    "pk": 2
+},
+{
+    "fields": {
+        "menu": 2,
+        "site": 3
+    },
+    "model": "core.extendedsite",
+    "pk": 3
+}
+]
