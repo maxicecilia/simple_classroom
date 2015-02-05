@@ -3,7 +3,7 @@ from django.contrib import admin
 
 from site_news.admin import NewsItemSimplifiedAdmin
 from site_news.models import NewsItem
-from apps.core.models import ExtendedSite
+from simple_classroom.apps.core.models import ExtendedSite
 
 
 # Register your models here.

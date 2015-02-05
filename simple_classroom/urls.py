@@ -4,13 +4,13 @@ from django.conf.urls import patterns, include, url
 from django.conf.urls.static import static
 from django.contrib import admin
 
-from apps.classroom.views import HomeView, ProfileView
-from apps.classroom.forms import StudentRegistrationForm
+from simple_classroom.apps.classroom.views import HomeView, ProfileView
+from simple_classroom.apps.classroom.forms import StudentRegistrationForm
 from registration.backends.simple.views import RegistrationView
 
 urlpatterns = patterns(
     '',
-    (r'', include('apps.classroom.urls')),
+    (r'', include('simple_classroom.apps.classroom.urls')),
     # Accounts URLs
     url(r'^accounts/profile/$', ProfileView.as_view(), name='profile'),
     url(

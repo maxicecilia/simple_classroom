@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from apps.core.middleware import get_site
+from simple_classroom.apps.core.middleware import get_site
 
 
 def sitetree(request):

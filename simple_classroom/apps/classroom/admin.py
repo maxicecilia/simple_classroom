@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
-from apps.classroom.models import Subject, Dictation, Enrolled, Assignment, Score
+from simple_classroom.apps.classroom.models import Subject, Dictation, Enrolled, Assignment, Score
 
 
 @admin.register(Subject)

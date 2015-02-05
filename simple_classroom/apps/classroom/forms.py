@@ -4,7 +4,7 @@ from django.dispatch import receiver
 from django.utils.translation import ugettext_lazy as _
 from registration.forms import RegistrationForm
 from registration.signals import user_registered
-from apps.classroom.models import StudentProfile
+from simple_classroom.apps.classroom.models import StudentProfile
 
 
 class StudentRegistrationForm(RegistrationForm):

@@ -9,7 +9,7 @@ from django.template import RequestContext
 from django.utils.decorators import method_decorator
 from django.views.generic import View
 from site_news.models import NewsItem
-from apps.classroom.models import Dictation, Enrolled, StudentProfile
+from simple_classroom.apps.classroom.models import Dictation, Enrolled, StudentProfile
 
 
 class HomeView(View):

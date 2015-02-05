@@ -39,8 +39,8 @@ INSTALLED_APPS = (
     'django.contrib.sites',
 
     'registration',
-    'apps.classroom',
-    'apps.core',
+    'simple_classroom.apps.classroom',
+    'simple_classroom.apps.core',
     'site_news',
     'sitetree',
     'bootstrap3',
@@ -54,7 +54,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'apps.core.middleware.RequestSiteMiddleware',
+    'simple_classroom.apps.core.middleware.RequestSiteMiddleware',
 )
 
 ROOT_URLCONF = 'simple_classroom.urls'
@@ -103,7 +103,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.request',
 
     'sitesutils.context_processors.site',
-    'apps.core.context_processors.sitetree',
+    'simple_classroom.apps.core.context_processors.sitetree',
 )
 
 TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'simple_classroom/templates')]
