@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
-from apps.classroom.models import Subject, Dictation, Enrolled
+from apps.classroom.models import Subject, Dictation, Enrolled, Assignment, Score
 
 
 @admin.register(Subject)
@@ -21,4 +21,20 @@ class EnrolledAdmin(admin.ModelAdmin):
 
     def student_full_name(self, obj):
         return obj.student_profile.user.get_full_name()
+    student_full_name.short_description = _(u'Alumno')
+
+
+@admin.register(Assignment)
+class AssignmentAdmin(admin.ModelAdmin):
+    list_display = ('title', 'assignment_type', 'dictation', 'is_published', 'publication_date')
+    list_filter = ('dictation', 'is_published', )
+
+
+@admin.register(Score)
+class ScoreAdmin(admin.ModelAdmin):
+    list_display = ('student_full_name', 'assignment', 'value', 'comment', 'date')
+    list_filter = ('assignment__dictation', 'assignment')
+
+    def student_full_name(self, obj):
+        return obj.enrolled.student_profile.user.get_full_name()
     student_full_name.short_description = _(u'Alumno')

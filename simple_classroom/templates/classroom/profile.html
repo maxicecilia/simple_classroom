@@ -27,7 +27,13 @@
           <div class="panel-body">
             <ul>
             {% for enroll in current_enrollments %}
-                <li>{{ enroll.dictation }}</li>
+                <li>{{ enroll.dictation }}
+                  <ul>
+                    {% for score in enroll.score_set.all %}
+                      <li>{{ score.assignment }} - {{ score.value }}</li>
+                    {% endfor %}
+                  </ul>
+                </li>
             {% endfor %}
             </ul>
           </div>

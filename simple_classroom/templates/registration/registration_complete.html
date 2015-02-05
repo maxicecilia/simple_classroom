@@ -1,1 +1,14 @@
-Registration OK! cool.
+{% extends "core/base.html" %}
+{% load bootstrap3 %}
+
+{% block main-content %}
+<div class="row">
+    <div class="col-md-6 col-md-offset-2">
+        <br/><br/>
+        <div class="well well-lg">
+            <p>Su registración ha concluido con éxito.</p>
+            <p>Volver al <a href="/">inicio</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}

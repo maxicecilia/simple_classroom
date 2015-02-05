@@ -66,3 +66,40 @@ class Enrolled(models.Model):
 
     def __unicode__(self):
         return u'{0}'.format(self.student_profile)
+
+
+class Assignment(models.Model):
+    ASSIGNMENT_TYPES = (
+        (1, _(u'Final')),
+        (2, _(u'Laboratorio')),
+        (3, _(u'Parcial')),
+        (4, _(u'Práctico')),
+        (5, _(u'Quizz')),
+    )
+    dictation = models.ForeignKey(Dictation)
+    title = models.CharField(_(u'Título'), max_length=255, blank=False, null=False)
+    is_published = models.BooleanField(_(u'Publicado'), blank=False, null=False, default=False)
+    publication_date = models.DateTimeField(_(u'Fecha de publicación'), blank=True, null=True)
+    assignment_type = models.IntegerField(_('Tipo'), choices=ASSIGNMENT_TYPES, default=4, null=False, blank=False)
+
+    class Meta:
+        verbose_name = _(u'Asignación')
+        verbose_name_plural = _(u'Asignaciones')
+
+    def __unicode__(self):
+        return u'{}'.format(self.title)
+
+
+class Score(models.Model):
+    assignment = models.ForeignKey(Assignment)
+    enrolled = models.ForeignKey(Enrolled)
+    date = models.DateTimeField(blank=False, null=False)
+    value = models.IntegerField(blank=False, null=False)
+    comment = models.CharField(max_length=255, blank=True, null=True)
+
+    class Meta:
+        verbose_name = _(u'Nota')
+        verbose_name_plural = _(u'Notas')
+
+    def __unicode__(self):
+        return u'{0}-{1}-{2}'.format(self.enrolled.student_profile.user.get_full_name(), self.assignment, self.value)
