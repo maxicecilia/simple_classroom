@@ -25,3 +25,6 @@ urlpatterns = patterns(
     # Site URLs
     url(r'^(?P<site>[A-Za-z]*)/$', HomeView.as_view(), name='home'),
 ) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+urlpatterns += patterns('django.contrib.flatpages.views',
+                        (r'^(?P<url>.*/)$', 'flatpage'),)

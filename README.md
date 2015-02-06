@@ -31,3 +31,9 @@ Run this and follow the instructions
 ✗ django-admin.py createsuperuser
 ```
 Use http://localhost:8000/admin/ to access the admin interface
+
+## Need initial data?
+Run this to load some!! (only ES data available)
+```
+✗ django-admin.py loaddata scripts/data/initial_data.json
+```
