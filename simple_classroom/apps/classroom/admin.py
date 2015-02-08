@@ -2,6 +2,7 @@
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 from simple_classroom.apps.classroom.models import Subject, Dictation, Enrolled, Assignment, Score
+from simple_classroom.apps.downloads.admin import DownloadInlineAdmin
 
 
 @admin.register(Subject)
@@ -28,6 +29,8 @@ class EnrolledAdmin(admin.ModelAdmin):
 class AssignmentAdmin(admin.ModelAdmin):
     list_display = ('title', 'assignment_type', 'dictation', 'is_published', 'publication_date')
     list_filter = ('dictation', 'is_published', )
+    inlines = [DownloadInlineAdmin, ]
+    readonly_fields = ('publication_date', 'evaluation_date', 'score_date', )
 
 
 @admin.register(Score)

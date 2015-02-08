@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
-from django.db import models
+import datetime
 from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
+from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from .managers import AssignmentManager
 
 
 class StudentProfile(models.Model):
@@ -69,18 +71,35 @@ class Enrolled(models.Model):
 
 
 class Assignment(models.Model):
+    FINAL = _(u'Final')
+    LABORATORY = _(u'Laboratorio')
+    PARTIAL = _(u'Parcial')
+    EXERCISE = _(u'Práctico')
+    QUIZZ = _(u'Quizz')
     ASSIGNMENT_TYPES = (
-        (1, _(u'Final')),
-        (2, _(u'Laboratorio')),
-        (3, _(u'Parcial')),
-        (4, _(u'Práctico')),
-        (5, _(u'Quizz')),
+        (1, FINAL),
+        (2, LABORATORY),
+        (3, PARTIAL),
+        (4, EXERCISE),
+        (5, QUIZZ),
     )
     dictation = models.ForeignKey(Dictation)
     title = models.CharField(_(u'Título'), max_length=255, blank=False, null=False)
-    is_published = models.BooleanField(_(u'Publicado'), blank=False, null=False, default=False)
+    description = models.TextField(_(u'Descripción'), blank=True, null=True)
+    is_published = models.BooleanField(
+        _(u'Publicado'), blank=False, null=False, default=False,
+        help_text=_(u'Tildar para mostrar la asignación a los inscriptos.'))
     publication_date = models.DateTimeField(_(u'Fecha de publicación'), blank=True, null=True)
+    is_evaluated = models.BooleanField(
+        _(u'Evaluado'), blank=False, null=False, default=False,
+        help_text=_(u'Tildar para indicar que la evaluación ya fue tomada y está disponible.'))
+    evaluation_date = models.DateTimeField(_(u'Fecha de evaluación'), blank=True, null=True)
+    is_scored = models.BooleanField(
+        _(u'Corregido'), blank=False, null=False, default=False,
+        help_text=_(u'Tildar para indicar que la evaluación ya fue corregida y las notas están disponibles.'))
+    score_date = models.DateTimeField(_(u'Fecha de Notas'), blank=True, null=True)
     assignment_type = models.IntegerField(_('Tipo'), choices=ASSIGNMENT_TYPES, default=4, null=False, blank=False)
+    objects = AssignmentManager()
 
     class Meta:
         verbose_name = _(u'Asignación')
@@ -88,6 +107,21 @@ class Assignment(models.Model):
 
     def __unicode__(self):
         return u'{}'.format(self.title)
+
+    def save(self, *args, **kwargs):
+        if self.pk is not None:
+            orig = Assignment.objects.get(pk=self.pk)
+            if orig.is_published != self.is_published and self.is_published is True:
+                # TODO: trigger signal, create news
+                self.publication_date = datetime.datetime.now()
+            if orig.is_evaluated != self.is_evaluated and self.is_evaluated is True:
+                # TODO: trigger signal, create news
+                self.evaluation_date = datetime.datetime.now()
+            if orig.is_scored != self.is_scored and self.is_scored is True:
+                # TODO: trigger signal, create news
+                self.score_date = datetime.datetime.now()
+
+        super(Assignment, self).save(*args, **kwargs)
 
 
 class Score(models.Model):

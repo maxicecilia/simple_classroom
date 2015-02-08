@@ -11,6 +11,7 @@ from registration.backends.simple.views import RegistrationView
 urlpatterns = patterns(
     '',
     (r'', include('simple_classroom.apps.classroom.urls')),
+    (r'', include('simple_classroom.apps.downloads.urls')),
     # Accounts URLs
     url(r'^accounts/profile/$', ProfileView.as_view(), name='profile'),
     url(

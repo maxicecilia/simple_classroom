@@ -45,6 +45,8 @@ INSTALLED_APPS = (
     'site_news',
     'sitetree',
     'bootstrap3',
+    'django_dropbox',
+    'simple_classroom.apps.downloads',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -121,3 +123,13 @@ REGISTRATION_AUTO_LOGIN = False  # Automatically log the user in.
 REGISTRATION_OPEN = True
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+
+# Dropbox config
+DROPBOX_CONSUMER_KEY = 'puf66k6qczgwr8l'
+DROPBOX_CONSUMER_SECRET = 's7qvfs6n5jqbazk'
+ACCESS_TYPE = "app_folder"
+
+# Token for simple_classroom.
+DROPBOX_ACCESS_TOKEN = 'n6b2iri922gm3jpq'
+DROPBOX_ACCESS_TOKEN_SECRET = 'cm1kuuh6lx8uuop'
