@@ -10,7 +10,7 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '../..'))
 
 
 # Quick-start development settings - unsuitable for production
@@ -126,13 +126,13 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 
 # Dropbox config
-DROPBOX_CONSUMER_KEY = 'puf66k6qczgwr8l'
-DROPBOX_CONSUMER_SECRET = 's7qvfs6n5jqbazk'
-ACCESS_TYPE = "app_folder"
+DROPBOX_CONSUMER_KEY = ''
+DROPBOX_CONSUMER_SECRET = ''
+ACCESS_TYPE = 'app_folder'
 
 # Token for simple_classroom.
-DROPBOX_ACCESS_TOKEN = 'n6b2iri922gm3jpq'
-DROPBOX_ACCESS_TOKEN_SECRET = 'cm1kuuh6lx8uuop'
+DROPBOX_ACCESS_TOKEN = ''
+DROPBOX_ACCESS_TOKEN_SECRET = ''
 
 # Title used to retrieve the default download file.
 ASSIGNMENT_DEFAULT_DOWNLOAD = 'evaluativo'
