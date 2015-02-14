@@ -9,7 +9,7 @@ from django.template import RequestContext
 from django.utils.decorators import method_decorator
 from django.views.generic import View
 from site_news.models import NewsItem
-from simple_classroom.apps.classroom.models import Dictation, Enrolled, StudentProfile
+from simple_classroom.apps.classroom.models import Dictation, Enrolled, StudentProfile, TeacherProfile
 
 
 class HomeView(View):
@@ -81,3 +81,20 @@ class EnrollView(View):
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         return super(EnrollView, self).dispatch(*args, **kwargs)
+
+
+class TeachersView(View):
+    template_name = 'classroom/teachers.html'
+
+    def get(self, request, *args, **kwargs):
+        current_dictation = Dictation.objects.get_current_or_default(
+            site=request.site, default_id=kwargs.get('dictation_id', None))
+        teachers = TeacherProfile.objects.filter(dictation=current_dictation).order_by('user__last_name')
+
+        return render_to_response(
+            self.template_name,
+            RequestContext(self.request, {
+                'dictation': current_dictation,
+                'teachers': teachers,
+            })
+        )

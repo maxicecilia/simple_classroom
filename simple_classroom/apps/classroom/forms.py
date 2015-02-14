@@ -4,7 +4,8 @@ from django.dispatch import receiver
 from django.utils.translation import ugettext_lazy as _
 from registration.forms import RegistrationForm
 from registration.signals import user_registered
-from simple_classroom.apps.classroom.models import StudentProfile
+from tinymce.widgets import TinyMCE
+from simple_classroom.apps.classroom.models import StudentProfile, TeacherProfile
 
 
 class StudentRegistrationForm(RegistrationForm):
@@ -28,3 +29,11 @@ def save_student_profile(sender, **kwargs):
                 cx=kwargs.get('request').POST.get('cx'))
         except:
             pass  # TODO: log me!!
+
+
+class TeacherProfileForm(forms.ModelForm):
+    abstract = forms.CharField(widget=TinyMCE(attrs={'cols': 100, 'rows': 20}))
+
+    class Meta:
+        model = TeacherProfile
+        fields = ['user', 'dictation', 'abstract', 'avatar']

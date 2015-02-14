@@ -39,14 +39,15 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.flatpages',
 
-    'registration',
-    'simple_classroom.apps.classroom',
-    'simple_classroom.apps.core',
-    'site_news',
-    'sitetree',
     'bootstrap3',
     'django_dropbox',
+    'registration',
+    'site_news',
+    'sitetree',
+    'tinymce',
     'simple_classroom.apps.downloads',
+    'simple_classroom.apps.classroom',
+    'simple_classroom.apps.core',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -94,7 +95,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
 
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',
@@ -136,3 +140,16 @@ DROPBOX_ACCESS_TOKEN_SECRET = ''
 
 # Title used to retrieve the default download file.
 ASSIGNMENT_DEFAULT_DOWNLOAD = 'evaluativo'
+
+# TinyMCE config
+TINYMCE_DEFAULT_CONFIG = {
+    'plugins': "table,paste",
+    'theme': "advanced",
+    'cleanup_on_startup': True,
+    'custom_undo_redo_levels': 10,
+    'fontsize_formats': "8pt 10pt 12pt 14pt 18pt 24pt 36pt",
+    'theme_advanced_font_sizes': "10px,12px,13px,14px,16px,18px,20px",
+    'font_size_style_values': "12px,13px,14px,16px,18px,20px",
+}
+TINYMCE_SPELLCHECKER = False
+TINYMCE_COMPRESSOR = True

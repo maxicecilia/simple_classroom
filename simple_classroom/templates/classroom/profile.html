@@ -1,4 +1,5 @@
 {% extends "core/base.html" %}
+{% load staticfiles %}
 
 {% block main-content %}
     <div class="page-header">
@@ -38,10 +39,21 @@
             </ul>
           </div>
         </div>
-
     {% elif profile_type == "teacher" %}
-        soy un profesor
-        {{ profile.abstract }}
+        <div class="container-fluid">
+          <div class="clearfix">
+            <div class="col-lg-3">
+              {% if profile.avatar %}
+                <img class="img-responsive img-rounded pull-left" src="{{ profile.avatar.url }}" alt="avatar" />
+              {% else %}
+                <img class="img-responsive img-rounded pull-left" src="{% static "img/default_avatar.jpg" %}" alt="default_avatar"/>
+              {% endif %}
+            </div>
+            <div class="well well-lg col-lg-8">
+              {{ profile.abstract|safe }}  
+            </div>
+          </div>
+        </div>
     {% else %}
         Who am I????
     {% endif %}

@@ -16,3 +16,11 @@ class AssignmentManager(models.Manager):
 
     def published_midterms(self):
         return self.midterms().filter(is_published=True)
+
+
+class DictationManager(models.Manager):
+    def get_current_or_default(self, site, default_id=None):
+        if default_id:
+            return super(DictationManager, self).get_queryset().get(pk=default_id)
+        else:
+            return super(DictationManager, self).get_queryset().filter(subject__site=site).order_by('-year')[0]

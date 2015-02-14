@@ -6,7 +6,9 @@ from django.contrib.sites.models import Site
 from django.db import models
 from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
-from .managers import AssignmentManager
+from tinymce.models import HTMLField
+from simple_classroom.apps.downloads import STORAGE
+from .managers import AssignmentManager, DictationManager
 
 
 class StudentProfile(models.Model):
@@ -14,14 +16,12 @@ class StudentProfile(models.Model):
     cx = models.CharField(max_length=8, null=False, blank=False)
     telephone = models.CharField(max_length=16, null=True, blank=True)
 
+    class Meta:
+        verbose_name = _(u'Estudiante')
+        verbose_name_plural = _(u'Estudiantes')
+
     def __unicode__(self):
         return u'{0}'.format(self.user.get_full_name())
-
-
-class TeacherProfile(models.Model):
-    user = models.OneToOneField(User)
-    site = models.ForeignKey(Site)
-    abstract = models.TextField(max_length=500, null=True, blank=True)
 
 
 class Subject(models.Model):
@@ -49,6 +49,7 @@ class Dictation(models.Model):
     semester = models.IntegerField(_('Semestre'), choices=SEMESTER_CHOICES, default=1, null=False, blank=False)
     year = models.IntegerField(_(u'Año'), null=False, blank=False)
     is_registration_open = models.BooleanField(_(u'Registración abierta'), default=True, null=False, blank=False)
+    objects = DictationManager()
 
     class Meta:
         verbose_name = _(u'Dictado')
@@ -56,6 +57,20 @@ class Dictation(models.Model):
 
     def __unicode__(self):
         return u'{0} {1}'.format(self.subject, self.year)
+
+
+class TeacherProfile(models.Model):
+    abstract = HTMLField(null=True, blank=True)
+    avatar = models.ImageField(_(u'Avatar'), upload_to='avatar', storage=STORAGE, null=True, blank=True)
+    dictation = models.ManyToManyField(Dictation, verbose_name=_(u'Dictado'))
+    user = models.OneToOneField(User, verbose_name=_(u'Usuario'))
+
+    class Meta:
+        verbose_name = _(u'Profesor')
+        verbose_name_plural = _(u'Profesores')
+
+    def __unicode__(self):
+        return u'{0}'.format(self.user.get_full_name())
 
 
 class Enrolled(models.Model):

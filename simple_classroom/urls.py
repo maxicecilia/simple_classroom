@@ -22,10 +22,11 @@ urlpatterns = patterns(
 
     # Admin URLs
     url(r'^admin/', include(admin.site.urls)),
+    (r'^tinymce/', include('tinymce.urls')),
 
     # Site URLs
     url(r'^(?P<site>[A-Za-z]*)/$', HomeView.as_view(), name='home'),
-) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += patterns('django.contrib.flatpages.views',
                         (r'^(?P<url>.*/)$', 'flatpage'),)
