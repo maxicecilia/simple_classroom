@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 import datetime
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
 from django.db import models
+from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
 from .managers import AssignmentManager
 
@@ -73,13 +75,13 @@ class Enrolled(models.Model):
 class Assignment(models.Model):
     FINAL = _(u'Final')
     LABORATORY = _(u'Laboratorio')
-    PARTIAL = _(u'Parcial')
+    MIDTERM = _(u'Parcial')
     EXERCISE = _(u'Práctico')
     QUIZZ = _(u'Quizz')
     ASSIGNMENT_TYPES = (
         (1, FINAL),
         (2, LABORATORY),
-        (3, PARTIAL),
+        (3, MIDTERM),
         (4, EXERCISE),
         (5, QUIZZ),
     )
@@ -122,6 +124,18 @@ class Assignment(models.Model):
                 self.score_date = datetime.datetime.now()
 
         super(Assignment, self).save(*args, **kwargs)
+
+    def get_previous_assignments(self):
+        ''' Returns the assignments for the last 3 previous dictations. '''
+        return Assignment.objects.published_exercises().filter(
+            dictation__in=Dictation.objects.filter(~Q(pk=self.dictation.pk)).order_by('-year')[:3], title=self.title)
+
+    def get_default_download(self):
+        ''' Return the default download, you can set the title you want in the settings file. '''
+        try:
+            return self.download_set.get(title=getattr(settings, 'ASSIGNMENT_DEFAULT_DOWNLOAD', 'default'))
+        except:
+            return None
 
 
 class Score(models.Model):

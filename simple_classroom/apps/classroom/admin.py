@@ -27,7 +27,7 @@ class EnrolledAdmin(admin.ModelAdmin):
 
 @admin.register(Assignment)
 class AssignmentAdmin(admin.ModelAdmin):
-    list_display = ('title', 'assignment_type', 'dictation', 'is_published', 'publication_date')
+    list_display = ('title', 'assignment_type', 'dictation', 'is_published', 'publication_date', 'is_evaluated', 'evaluation_date', 'is_scored', 'score_date')
     list_filter = ('dictation', 'is_published', )
     inlines = [DownloadInlineAdmin, ]
     readonly_fields = ('publication_date', 'evaluation_date', 'score_date', )

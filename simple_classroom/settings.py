@@ -133,3 +133,6 @@ ACCESS_TYPE = "app_folder"
 # Token for simple_classroom.
 DROPBOX_ACCESS_TOKEN = 'n6b2iri922gm3jpq'
 DROPBOX_ACCESS_TOKEN_SECRET = 'cm1kuuh6lx8uuop'
+
+# Title used to retrieve the default download file.
+ASSIGNMENT_DEFAULT_DOWNLOAD = 'evaluativo'
