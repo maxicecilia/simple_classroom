@@ -1,0 +1,55 @@
+{% extends "core/base.html" %}
+
+{% block main-content %}
+    <div class="page-header">
+        <h1>{{ dictation }}<br/></h1>
+    </div>
+    <table class="table table-striped table-bordered table-condensed">
+        <thead>
+            <th>Práctico</th>
+            <th>Tema</th>
+            <th>Archivos</th>
+            <th>Fecha Publicado</th>
+            <th>Fecha Evaluativo</th>
+            <th>Fecha Notas</th>
+            {% for old_dictation in previous_dictations %}
+                <th>{{ old_dictation.year }}</th>
+                <th>DC</th>
+            {% endfor %}
+        </thead>
+      {% for exercise in exercises %}
+      <tr>
+        <td>{{ exercise }}</td>
+        <td>{{ exercise.description }}</td>
+        <td>
+        {% for download in exercise.download_set.all %}
+            {% if exercise.is_published %}<a href="{{download.data.url}}">{{ download.title }}</a>{% endif %}
+        {% endfor %}
+        </td>
+        <td>{{ exercise.publication_date|date:"d/m/y"|default:"-" }}</td>
+        <td>{{ exercise.evaluation_date|date:"d/m/y"|default:"-" }}</td>
+        <td>{{ exercise.score_date|date:"d/m/y"|default:"-" }}</td>
+        {% for assig in exercise.get_previous_assignments %}
+            <td>{% if assig.get_default_download %}<a href="assig.get_default_download.data.url">{{ assig.get_default_download }}</a>{% endif %}</td>
+            <td>{% if assig.get_default_download %}{{ assig.evaluation_date.date|timesince:assig.score_date.date }}{% endif %}</td>
+        {% endfor %}
+      </tr>
+      {% endfor %}
+    </table>
+
+    <div class="page-header"><h1>Parciales de Años Anteriores</h1></div>
+    <table class="table table-striped table-bordered table-condensed">
+        <thead>
+            <th></th>
+            {% for old_dictation in previous_dictations %}
+                <th>{{ old_dictation.year }}</th>
+            {% endfor %}
+        </thead>
+      {% for midterm in midterms %}
+      <tr>
+        <td>{{ midterm }}</td>
+        <td>{% if midterm.get_default_download %}<a href="midterm.get_default_download.data.url">{{ midterm.get_default_download }}</a>{% endif %}</td>
+      </tr>
+      {% endfor %}
+    </table>
+{% endblock %}

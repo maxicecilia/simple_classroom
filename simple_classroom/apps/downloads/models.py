@@ -3,14 +3,8 @@ from django.conf import settings
 from django.db import models
 from django.utils.deconstruct import deconstructible
 from django.utils.translation import ugettext_lazy as _
-from django_dropbox.storage import DropboxStorage
 from simple_classroom.apps.classroom.models import Assignment
 from simple_classroom.apps.downloads import STORAGE
-
-
-@deconstructible
-class DropboxStorageDeconstructible(DropboxStorage):
-    pass
 
 
 class Download(models.Model):

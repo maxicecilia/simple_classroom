@@ -1,5 +1,12 @@
 # -*- coding: utf-8 -*-
 from django.conf import settings
+from django_dropbox.storage import DropboxStorage
+
+
+@deconstructible
+class DropboxStorageDeconstructible(DropboxStorage):
+    pass
+
 
 STORAGE = getattr(settings, 'DEFAULT_MEDIA_STORAGE', None)
 if settings.DEBUG and not STORAGE:
