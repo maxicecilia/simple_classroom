@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.conf import settings
+from django.utils.deconstruct import deconstructible
 from django_dropbox.storage import DropboxStorage
 
 
