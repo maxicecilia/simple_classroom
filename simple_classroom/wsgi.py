@@ -1,14 +1,21 @@
-"""
-WSGI config for simple_classroom project.
-
-It exposes the WSGI callable as a module-level variable named ``application``.
-
-For more information on this file, see
-https://docs.djangoproject.com/en/1.7/howto/deployment/wsgi/
-"""
-
 import os
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "simple_classroom.settings")
+import sys
+import site
 
-from django.core.wsgi import get_wsgi_application
-application = get_wsgi_application()
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../../")))
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../")))
+
+# Add the site-packages of the chosen virtualenv to work with
+site.addsitedir('/root/.virtualenvs/facultad-prod/lib/python2.7/site-packages')
+
+# sys.path.append('/home/shared/kobold/irongolem')
+
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "simple_classroom.settings")
+# os.environ["DJANGO_SETTINGS_MODULE"] = "settings.base"
+
+# Activate your virtual env
+activate_env = os.path.expanduser("/root/.virtualenvs/facultad-prod/bin/activate_this.py")
+execfile(activate_env, dict(__file__=activate_env))
+
+from django.core.handlers.wsgi import WSGIHandler
+application = WSGIHandler()

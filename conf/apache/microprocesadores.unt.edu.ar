@@ -1,0 +1,31 @@
+# Facultad - prod
+<VirtualHost 0.0.0.0:80>
+    ServerName www.microprocesadores.unt.edu.ar
+    ServerAlias microprocesadores.unt.edu.ar
+
+    WSGIScriptAlias / /home/webapps/facultad_prod/simple_classroom/wsgi.py
+
+    <Directory /home/webapps/facultad_prod>
+    <Files wsgi.py>
+            Order deny,allow
+            Allow from all
+    </Files>
+    </Directory>
+
+    Alias /media/    "/home/webapps/facultad_prod/simple_classroom/media/"
+    <Location /media>
+        SetHandler None
+        Options Indexes FollowSymLinks MultiViews
+        Order allow,deny
+        allow from all
+    </Location>
+
+    Alias /static/   "/home/webapps/facultad_prod/simple_classroom/static/"
+    <Location /static>
+        SetHandler None
+        Options Indexes FollowSymLinks MultiViews
+        Order allow,deny
+        allow from all
+    </Location>
+
+</VirtualHost>
