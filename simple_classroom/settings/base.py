@@ -132,7 +132,6 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # Dropbox config
 DROPBOX_CONSUMER_KEY = ''
 DROPBOX_CONSUMER_SECRET = ''
-ACCESS_TYPE = 'app_folder'
 
 # Token for simple_classroom.
 DROPBOX_ACCESS_TOKEN = ''

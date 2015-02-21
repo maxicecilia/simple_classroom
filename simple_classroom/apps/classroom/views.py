@@ -96,7 +96,6 @@ class TeachersView(View):
         current_dictation = Dictation.objects.get_current_or_default(
             site=request.site, default_id=kwargs.get('dictation_id', None))
         teachers = TeacherProfile.objects.filter(dictation=current_dictation).order_by('user__first_name')
-
         return render_to_response(
             self.template_name,
             RequestContext(self.request, {

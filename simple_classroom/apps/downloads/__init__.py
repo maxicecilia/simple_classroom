@@ -9,9 +9,10 @@ class DropboxStorageDeconstructible(DropboxStorage):
     pass
 
 
-STORAGE = getattr(settings, 'DEFAULT_MEDIA_STORAGE', None)
-if settings.DEBUG and not STORAGE:
+DEFAULT_MEDIA_STORAGE = getattr(settings, 'DEFAULT_MEDIA_STORAGE', 'DROPBOX')
+DEFAULT_MEDIA_STORAGE_LOCATION = getattr(settings, 'DEFAULT_MEDIA_STORAGE_LOCATION', '/simple_classroom')
+if DEFAULT_MEDIA_STORAGE == 'DROPBOX':
+    STORAGE = DropboxStorageDeconstructible(location=DEFAULT_MEDIA_STORAGE_LOCATION)
+else:
     from django.core.files.storage import FileSystemStorage
     STORAGE = FileSystemStorage()
-elif not STORAGE:
-    STORAGE = DropboxStorageDeconstructible(location='/simple_classroom')

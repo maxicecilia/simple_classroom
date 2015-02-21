@@ -88,6 +88,9 @@ class TeacherProfile(models.Model):
     def __unicode__(self):
         return u'{0}'.format(self.user.get_full_name())
 
+    def avatar_url(self):
+        return self.avatar.url.replace('www.dropbox', 'dl.dropboxusercontent')
+
 
 class Enrolled(models.Model):
     student_profile = models.ForeignKey(StudentProfile, null=False, blank=False)

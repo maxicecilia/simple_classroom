@@ -11,7 +11,7 @@
         {% if forloop.counter|divisibleby:2 %}
           <div class="col-lg-3">
             {% if teacher.avatar %}
-              <img class="img-responsive img-rounded pull-left" src="{{ teacher.avatar.url }}" alt="avatar" />
+              <img class="img-responsive img-rounded pull-left" src="{{ teacher.avatar_url }}" alt="avatar" />
             {% else %}
               <img class="img-responsive img-rounded pull-left" src="{% static "img/default_avatar.jpg" %}" alt="default_avatar"/>
             {% endif %}
@@ -24,7 +24,7 @@
         {% if not forloop.counter|divisibleby:2 %}
           <div class="col-lg-3">
             {% if teacher.avatar %}
-              <img class="img-responsive img-rounded pull-left" src="{{ teacher.avatar.url }}" alt="avatar" />
+              <img class="img-responsive img-rounded pull-left" src="{{ teacher.avatar_url }}" alt="avatar" />
             {% else %}
               <img class="img-responsive img-rounded pull-left" src="{% static "img/default_avatar.jpg" %}" alt="default_avatar"/>
             {% endif %}
