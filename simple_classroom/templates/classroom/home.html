@@ -3,8 +3,10 @@
 {% block main-content %}
     <div class="page-header">
         <h1>Cartelera de Novedades<br/>
-        <h4>Hasta el d&iacute;a {{lastUpdate|default:"25/10/2015"}}, se dictaron {{horasTeoria|default:5}} horas de clase te&oacute;rica, 
-      y {{horasPractica|default:12}} horas de clase pr&aacute;ctica, lo que totaliza <b>{{ horasTotal|default:17 }} horas</b> en el semestre.</h4>
+        {% if total_dictated_hours > 0%}
+          <h4>Hasta el día {{current_dictation.last_modification_date|date:"d/m/y"}}, se dictaron {{current_dictation.dictated_theory_hours }} horas de clase teórica, 
+      y {{ current_dictation.dictated_practice_hours }} horas de clase práctica, lo que totaliza <b>{{ total_dictated_hours }} horas</b> en el semestre.</h4>
+        {% endif %}
       </h1>
     </div>
     <table class="table table-striped table-bordered table-condensed">

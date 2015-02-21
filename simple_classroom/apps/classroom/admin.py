@@ -33,6 +33,7 @@ class SubjectAdmin(admin.ModelAdmin):
 @admin.register(class_models.Dictation)
 class DictationAdmin(admin.ModelAdmin):
     list_display = ('subject', 'year', 'semester', 'date_from', 'date_to')
+    readonly_fields = ('last_modification_date', )
 
 
 @admin.register(class_models.Enrolled)

@@ -41,14 +41,18 @@
     <table class="table table-striped table-bordered table-condensed">
         <thead>
             <th></th>
+            <th>{{dictation.year}}</th>
             {% for old_dictation in previous_dictations %}
                 <th>{{ old_dictation.year }}</th>
-            {% endfor %}
+            {% endfor %}            
         </thead>
       {% for midterm in midterms %}
       <tr>
-        <td>{{ midterm }}</td>
+        <td>{{ midterm.title }}</td>
         <td>{% if midterm.get_default_download %}<a href="midterm.get_default_download.data.url">{{ midterm.get_default_download }}</a>{% endif %}</td>
+        {% for previous in midterm.get_previous_assignments %}
+            <td>{% if previous.get_default_download %}<a href="previous.get_default_download.data.url">{{ previous.get_default_download }}{% endif %}</td>
+        {% endfor %}
       </tr>
       {% endfor %}
     </table>

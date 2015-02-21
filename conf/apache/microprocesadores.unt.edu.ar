@@ -3,7 +3,7 @@
     ServerName www.microprocesadores.unt.edu.ar
     ServerAlias microprocesadores.unt.edu.ar
 
-    WSGIScriptAlias / /home/webapps/facultad_prod/simple_classroom/wsgi.py
+    WSGIScriptAlias / /home/webapps/facultad_prod/conf/apache/wsgi.py
 
     <Directory /home/webapps/facultad_prod>
     <Files wsgi.py>
@@ -12,7 +12,7 @@
     </Files>
     </Directory>
 
-    Alias /media/    "/home/webapps/facultad_prod/simple_classroom/media/"
+    Alias /media/    "/home/webapps/facultad_prod/media/"
     <Location /media>
         SetHandler None
         Options Indexes FollowSymLinks MultiViews
@@ -20,7 +20,7 @@
         allow from all
     </Location>
 
-    Alias /static/   "/home/webapps/facultad_prod/simple_classroom/static/"
+    Alias /static/   "/home/webapps/facultad_prod/static/"
     <Location /static>
         SetHandler None
         Options Indexes FollowSymLinks MultiViews

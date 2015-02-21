@@ -17,9 +17,15 @@ class HomeView(View):
 
     def get(self, request, *args, **kwargs):
         news = NewsItem.objects_published.get_latest_by_site(site=request.site)
+        current_dictation = Dictation.objects.get_current_or_default(site=request.site)
         return render_to_response(
             self.template_name,
-            RequestContext(self.request, {'news': news, 'now': datetime.datetime.now().date()})
+            RequestContext(self.request, {
+                'news': news,
+                'now': datetime.datetime.now().date(),
+                'current_dictation': current_dictation,
+                'total_dictated_hours': current_dictation.get_total_dictated_hours(),
+            })
         )
 
 
@@ -89,7 +95,7 @@ class TeachersView(View):
     def get(self, request, *args, **kwargs):
         current_dictation = Dictation.objects.get_current_or_default(
             site=request.site, default_id=kwargs.get('dictation_id', None))
-        teachers = TeacherProfile.objects.filter(dictation=current_dictation).order_by('user__last_name')
+        teachers = TeacherProfile.objects.filter(dictation=current_dictation).order_by('user__first_name')
 
         return render_to_response(
             self.template_name,

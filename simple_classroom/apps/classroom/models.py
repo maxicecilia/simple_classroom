@@ -49,14 +49,30 @@ class Dictation(models.Model):
     semester = models.IntegerField(_('Semestre'), choices=SEMESTER_CHOICES, default=1, null=False, blank=False)
     year = models.IntegerField(_(u'Año'), null=False, blank=False)
     is_registration_open = models.BooleanField(_(u'Registración abierta'), default=True, null=False, blank=False)
+    dictated_practice_hours = models.PositiveIntegerField(_(u'Horas dictadas de práctica'), default=0, null=False, blank=False)
+    dictated_theory_hours = models.PositiveIntegerField(_(u'Horas dictadas de teoría'), default=0, null=False, blank=False)
+    last_modification_date = models.DateTimeField(_(u'Fecha de última modificación'), null=True, blank=True)
+
     objects = DictationManager()
 
     class Meta:
         verbose_name = _(u'Dictado')
         verbose_name_plural = _(u'Dictados')
+        ordering = ['-year', 'subject']
 
     def __unicode__(self):
         return u'{0} {1}'.format(self.subject, self.year)
+
+    def get_total_dictated_hours(self):
+        return self.dictated_practice_hours + self.dictated_theory_hours
+
+    def save(self, *args, **kwargs):
+        if self.pk is not None:
+            orig = Dictation.objects.get(pk=self.pk)
+            if (orig.dictated_practice_hours != self.dictated_practice_hours
+                    or orig.dictated_theory_hours != self.dictated_theory_hours):
+                self.last_modification_date = datetime.datetime.now()
+        super(Dictation, self).save(*args, **kwargs)
 
 
 class TeacherProfile(models.Model):
@@ -142,8 +158,12 @@ class Assignment(models.Model):
 
     def get_previous_assignments(self):
         ''' Returns the assignments for the last 3 previous dictations. '''
-        return Assignment.objects.published_exercises().filter(
-            dictation__in=Dictation.objects.filter(~Q(pk=self.dictation.pk)).order_by('-year')[:3], title=self.title)
+        return Assignment.objects.filter(
+            is_published=True,
+            assignment_type=self.assignment_type,
+            title=self.title,
+            dictation__in=Dictation.objects.filter(~Q(pk=self.dictation.pk)).order_by('-year')[:3],
+        )
 
     def get_default_download(self):
         ''' Return the default download, you can set the title you want in the settings file. '''
