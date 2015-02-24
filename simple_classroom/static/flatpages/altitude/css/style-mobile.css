@@ -1,0 +1,286 @@
+/*
+    Altitude by TEMPLATED
+    templated.co @templatedco
+    Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)
+*/
+
+/*********************************************************************************/
+/* Basic                                                                         */
+/*********************************************************************************/
+
+    body,input,textarea,select
+    {
+        line-height: 1.75em;
+        font-size: 12pt;
+        letter-spacing: 0;
+    }
+
+    #skel-panels-pageWrapper
+    {
+        box-shadow: 0 0 15px 0 rgba(0,0,0,0.5);
+        padding-top: 40px;
+    }
+
+    h2, h3, h4, h5, h6
+    {
+        font-size: 1.5em;
+    }
+
+    section,
+    article
+    {
+        clear: both;
+        margin: 2em 0 2em 0 !important;
+    }
+
+    section > :first-child,
+    article > :first-child
+    {
+        margin-top: 0 !important;
+    }
+
+    section:first-child,
+    article:first-child
+    {
+        margin-top: 0 !important;
+    }
+    
+    .container
+    {
+        padding: 0em 1em;
+    }
+    
+    /* Reusable Buttons */
+    
+    .button {
+        display: block;
+        line-height: 60px;
+        font-size: 16pt;
+        letter-spacing: 0;
+        width: 100%;
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        text-align: center;
+    }
+    
+    header
+    {
+        margin-bottom: 2em;
+    }
+    
+        header h2
+        {
+            font-size: 2em;
+        }
+
+        header .byline
+        {
+            letter-spacing: 1px;
+            font-size: 1.3em;
+        }
+
+/*********************************************************************************/
+/* UI                                                                            */
+/*********************************************************************************/
+
+    #titleBar
+    {
+        background: #364047 url(images/img01.jpg) repeat;
+    }
+
+        #titleBar .title a
+        {
+            display: block;
+            color: #fff;
+            text-align: center;
+            line-height: 44px;
+        }
+        
+            #titleBar .title span
+            {
+                display: none;
+            }
+
+        #titleBar .toggle
+        {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 80px;
+            height: 60px;
+        }
+
+            #titleBar .toggle:after
+            {
+                content: '';
+                display: block;
+                width: 20px;
+                height: 12px;
+                position: absolute;
+                left: 10px;
+                top: 15px;
+                background: url('images/toggle.svg') 0px 0px no-repeat;
+                opacity: 0.5;
+            }
+
+            #titleBar .toggle:active:after
+            {
+                opacity: 0.75;
+            }
+
+    #navPanel
+    {
+        background: #364047 url(images/img01.jpg) repeat;
+    }
+
+        #navPanel .link
+        {
+            display: block;
+            color: #888;
+            text-decoration: none;
+            height: 44px;
+            line-height: 44px;
+            border-top: solid 1px rgba(255,255,255,0.1);
+            padding: 0 1em 0 1em;
+        }
+        
+            #navPanel .link:first-child
+            {
+                border-top: 0;
+            }
+            
+            #navPanel .link.depth-0
+            {
+                color: #fff;
+            }
+
+            #navPanel .indent-1 { display: inline-block; width: 1em; }
+            #navPanel .indent-2 { display: inline-block; width: 2em; }
+            #navPanel .indent-3 { display: inline-block; width: 3em; }
+            #navPanel .indent-4 { display: inline-block; width: 4em; }
+            #navPanel .indent-5 { display: inline-block; width: 5em; }
+            #navPanel .depth-0 { color: #fff; }
+            
+/*********************************************************************************/
+/* Header                                                                        */
+/*********************************************************************************/
+
+    #header
+    {
+        display: none;
+    }
+
+    #logo
+    {
+        display: none;
+    }
+    
+    #nav
+    {
+        display: none;
+    }
+    
+/*********************************************************************************/
+/* Banner                                                                        */
+/*********************************************************************************/
+
+    #banner-wrapper
+    {
+        width: 100% !important;
+        margin: 0em !important;
+        padding: 0em !important;
+    }
+
+
+    #banner {
+        width: 100%;
+        margin: 0 0 1em 0;
+    }
+
+    #banner a {
+    }
+
+    #banner a img {
+        width: 100%;
+        display: block;
+    }
+
+    #banner .caption {
+        background: url(images/img01.jpg) repeat;
+        font-size: 1.25em;
+        line-height: 1.5em;
+        color: #aaa;
+        text-align: center;
+        text-shadow: -1px -1px 1px rgba(0,0,0,1);
+        padding: 0.75em 1.5em 1em 1.5em;
+        color: #FFFFFF;
+    }
+
+    #banner .caption span {
+        display: block;
+        margin: 0 0 0.75em 0;
+    }
+
+    #banner .caption span strong {
+        color: #ffffff;
+    }
+
+    #banner .caption .button {
+        display: inline-block;
+    }
+
+    .shadow a img {
+        width: 100%;
+        display: block;
+    }
+
+/*********************************************************************************/
+/* Wrapper                                                                        */
+/*********************************************************************************/
+
+    #wrapper
+    {
+        padding-bottom: 2em;
+    }
+    
+/*********************************************************************************/
+/* Main                                                                          */
+/*********************************************************************************/
+
+    #main-wrapper
+    {
+    }
+
+    #main-wrapper .divider
+    {
+        margin: 3em 0em 0em 0em;
+    }
+    
+    #main
+    {
+    }
+    
+    #content
+    {
+        border-right: none;
+        padding-right: 0em;
+    }
+
+    
+    .left-sidebar #content
+    {
+        border-left: none;
+    }
+    
+    .left-sidebar #sidebar
+    {
+        padding-right: 3em;
+    }
+    
+    #sidebar
+    {
+        margin-top: 3em;
+    }
+    
+    
