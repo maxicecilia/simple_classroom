@@ -7,6 +7,7 @@ from django.db import models
 from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
 from tinymce.models import HTMLField
+from simple_classroom.apps.core.models import DropboxStorageMixin
 from simple_classroom.apps.downloads import STORAGE
 from .managers import AssignmentManager, DictationManager
 
@@ -25,7 +26,7 @@ class StudentProfile(models.Model):
 
 
 class Subject(models.Model):
-    site = models.ForeignKey(Site)
+    site = models.OneToOneField(Site)
     code = models.CharField(_(u'Código'), max_length=8, null=False, blank=False)
     name = models.CharField(_(u'Nombre'), max_length=30, null=False, blank=False)
     short_name = models.CharField(_(u'Nombre corto'), max_length=15, null=True, blank=True)
@@ -75,7 +76,7 @@ class Dictation(models.Model):
         super(Dictation, self).save(*args, **kwargs)
 
 
-class TeacherProfile(models.Model):
+class TeacherProfile(models.Model, DropboxStorageMixin):
     abstract = HTMLField(null=True, blank=True)
     avatar = models.ImageField(_(u'Avatar'), upload_to='avatar', storage=STORAGE, null=True, blank=True)
     dictation = models.ManyToManyField(Dictation, verbose_name=_(u'Dictado'))
@@ -85,11 +86,15 @@ class TeacherProfile(models.Model):
         verbose_name = _(u'Profesor')
         verbose_name_plural = _(u'Profesores')
 
+    def __init__(self, *args, **kwargs):
+        super(TeacherProfile, self).__init__(*args, **kwargs)
+        try:
+            self.default_image = getattr(self, 'avatar', None)
+        except KeyError:
+            pass
+
     def __unicode__(self):
         return u'{0}'.format(self.user.get_full_name())
-
-    def avatar_url(self):
-        return self.avatar.url.replace('www.dropbox', 'dl.dropboxusercontent')
 
 
 class Enrolled(models.Model):

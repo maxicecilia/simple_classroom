@@ -45,9 +45,10 @@ INSTALLED_APPS = (
     'site_news',
     'sitetree',
     'tinymce',
-    'simple_classroom.apps.downloads',
-    'simple_classroom.apps.classroom',
     'simple_classroom.apps.core',
+    'simple_classroom.apps.classroom',
+    'simple_classroom.apps.downloads',
+    'simple_classroom.apps.bibliography',
 )
 
 MIDDLEWARE_CLASSES = (

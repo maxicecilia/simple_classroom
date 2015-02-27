@@ -12,6 +12,7 @@ urlpatterns = patterns(
     '',
     (r'', include('simple_classroom.apps.classroom.urls')),
     (r'', include('simple_classroom.apps.downloads.urls')),
+    (r'', include('simple_classroom.apps.bibliography.urls')),
     # Accounts URLs
     url(r'^accounts/profile/$', ProfileView.as_view(), name='profile'),
     url(
