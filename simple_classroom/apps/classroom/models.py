@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
 from django.db import models
 from django.db.models import Q
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext as _
 from tinymce.models import HTMLField
 from simple_classroom.apps.core.models import DropboxStorageMixin
 from simple_classroom.apps.downloads import STORAGE
