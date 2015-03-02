@@ -31,7 +31,7 @@
         <td>{{ exercise.score_date|date:"d/m/y"|default:"-" }}</td>
         {% for assig in exercise.get_previous_assignments %}
             <td>{% if assig.get_default_download %}<a href="assig.get_default_download.data.url">{{ assig.get_default_download }}</a>{% endif %}</td>
-            <td>{% if assig.get_default_download %}{{ assig.evaluation_date.date|timesince:assig.score_date.date }}{% endif %}</td>
+            <td>{% if assig.is_scored %}{{ assig.evaluation_date.date|timesince:assig.score_date.date }}{% endif %}</td>
         {% endfor %}
       </tr>
       {% endfor %}
