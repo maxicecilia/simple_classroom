@@ -29,7 +29,7 @@ class Download(models.Model):
         verbose_name_plural = _(u'Descargas')
 
     def __unicode__(self):
-        return '{}'.format(self.title)
+        return u'{}'.format(self.title)
 
 
 class CategoryDownload(models.Model):
@@ -72,4 +72,4 @@ class SiteDownload(models.Model, DropboxStorageMixin):
         verbose_name_plural = _(u'Descargas')
 
     def __unicode__(self):
-        return '{}'.format(self.title)
+        return u'{}'.format(self.title)

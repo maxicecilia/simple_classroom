@@ -11,10 +11,13 @@
     </div>
     <table class="table table-striped table-bordered table-condensed">
       {% for article in news %}
+      {{article}}
+      {% if article.published %}
       <tr>
         <td class="{% if article.date == now %}success{% endif %}">{{ article.date|date:"d/m/y" }}</td>
-        <td class="{% if article.date == now %}success{% endif %}">{{ article.body|default:article.snippet }}</td>
+        <td class="{% if article.date == now %}success{% endif %}">{{ article.body|safe }}</td>
       </tr>
+      {% endif %}
       {% endfor %}
     </table>
 {% endblock %}

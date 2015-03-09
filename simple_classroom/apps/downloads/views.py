@@ -41,7 +41,7 @@ class SiteDownloadCategoryView(View):
             download_type = SiteDownload.DOWNLOAD_TYPES[int(kwargs.get('download_type'))][1]
 
         for category in categories:
-            downloads = category.sitedownload_set.filter(site=request.site)
+            downloads = category.sitedownload_set.filter(site=request.site).order_by('title')
             if 'download_type' in kwargs and kwargs['download_type'] != '':
                 downloads.filter(download_type=kwargs.get('download_type'))
 
