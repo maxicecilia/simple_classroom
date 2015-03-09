@@ -14,7 +14,8 @@ def get_upload_path(instance, filename):
     return os.path.join(
         'files',
         site.subject.short_name if site else 'default',
-        SiteDownload.FOLDERS[download_type])
+        SiteDownload.FOLDERS[download_type],
+        instance.data.name)
 
 
 class Download(models.Model):
@@ -41,6 +42,9 @@ class CategoryDownload(models.Model):
         verbose_name_plural = _(u'Categorías')
         ordering = ['-order', ]
 
+    def __unicode__(self):
+        return u'{}'.format(self.name)
+
 
 class SiteDownload(models.Model, DropboxStorageMixin):
     ''' All downloads related to the site/subject'''
@@ -52,7 +56,7 @@ class SiteDownload(models.Model, DropboxStorageMixin):
         (1, RESOURCE),
         (2, OTHER),
     )
-    FOLDERS = ('slides', 'resources', 'others')
+    FOLDERS = ('diapositivas/', 'resources/', 'others/')
     site = models.ForeignKey(Site)
     category = models.ForeignKey(CategoryDownload, verbose_name=_(u'Categoría'), null=True, blank=True)
     download_type = models.IntegerField(_(u'Tipo'), choices=DOWNLOAD_TYPES, default=4, null=False, blank=False)
