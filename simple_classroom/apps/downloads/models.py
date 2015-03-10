@@ -40,7 +40,7 @@ class CategoryDownload(models.Model):
     class Meta:
         verbose_name = _(u'Categoría')
         verbose_name_plural = _(u'Categorías')
-        ordering = ['-order', ]
+        ordering = ['order', ]
 
     def __unicode__(self):
         return u'{}'.format(self.name)
