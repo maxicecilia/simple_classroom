@@ -14,7 +14,7 @@
       {% for download in object.downloads %}
       <tr>
         <td>{{ download.title|default:"-" }}</td>
-        <td>{% if object.get_image_url %}<a href="{{ download.get_image_url }}">descarga</a>{% endif %}</td>
+        <td>{% if download.get_image_url %}<a href="{{ download.get_image_url }}">descarga</a>{% endif %}</td>
       </tr>
       {% endfor %}
     </table>
