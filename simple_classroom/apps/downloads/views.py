@@ -11,13 +11,14 @@ from simple_classroom.apps.downloads.models import Download, SiteDownload, Categ
 
 
 class DownloadsDictationView(View):
+    ''' TODO: Move to classroom app'''
     template_name = 'downloads/per_dictation.html'
 
     def get(self, request, *args, **kwargs):
         dictation = Dictation.objects.get_current_or_default(
             site=request.site, default_id=kwargs.get('dictation_id', None))
         previous_dictations = Dictation.objects.filter(~Q(pk=dictation.pk)).order_by('-year')[:3]
-        exercises = Assignment.objects.exercises().filter(dictation=dictation).order_by('-pk')
+        exercises = Assignment.objects.exercises().filter(dictation=dictation)
         midterms = Assignment.objects.published_midterms().filter(dictation=dictation)
         return render_to_response(
             self.template_name,

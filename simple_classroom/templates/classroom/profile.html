@@ -3,7 +3,7 @@
 
 {% block main-content %}
     <div class="page-header">
-        <h2>{{user.get_full_name}}</h2>
+        <h2>{{user.last_name|capfirst}}, {{user.first_name|capfirst}}</h2>
     </div>
     {% if profile_type == "student" %}
         <div class="panel panel-default">

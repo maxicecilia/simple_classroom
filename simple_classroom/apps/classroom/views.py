@@ -12,19 +12,26 @@ from site_news.models import NewsItem
 from simple_classroom.apps.classroom.models import Dictation, Enrolled, StudentProfile, TeacherProfile
 
 
-class HomeView(View):
+class ClassroomView(View):
+
+    def dispatch(self, *args, **kwargs):
+        self.current_dictation = Dictation.objects.get_current_or_default(
+            site=self.request.site, default_id=kwargs.get('dictation_id', None))
+        return super(ClassroomView, self).dispatch(*args, **kwargs)
+
+
+class HomeView(ClassroomView):
     template_name = 'classroom/home.html'
 
     def get(self, request, *args, **kwargs):
         news = NewsItem.objects_published.get_latest_by_site(site=request.site)
-        current_dictation = Dictation.objects.get_current_or_default(site=request.site)
         return render_to_response(
             self.template_name,
             RequestContext(self.request, {
                 'news': news,
                 'now': datetime.datetime.now().date(),
-                'current_dictation': current_dictation,
-                'total_dictated_hours': current_dictation.get_total_dictated_hours(),
+                'current_dictation': self.current_dictation,
+                'total_dictated_hours': self.current_dictation.get_total_dictated_hours(),
             })
         )
 
@@ -65,17 +72,16 @@ class ProfileView(View):
         return super(ProfileView, self).dispatch(*args, **kwargs)
 
 
-class EnrollView(View):
+class EnrollView(ClassroomView):
     def post(self, request, *args, **kwargs):
         try:
             student_profile = StudentProfile.objects.get(pk=kwargs.get('student_id'))
-            dictation = Dictation.objects.get(pk=kwargs.get('dictation_id'))
             previous_attempts = Enrolled.objects.filter(
                 student_profile=student_profile,
-                dictation__subject=dictation.subject,).count()
+                dictation__subject=self.current_dictation.subject,).count()
             enroll = Enrolled.objects.create(
                 student_profile=student_profile,
-                dictation=dictation,
+                dictation=self.current_dictation,
                 date=datetime.datetime.now(),
                 previous_attempts=previous_attempts)
 
@@ -89,17 +95,33 @@ class EnrollView(View):
         return super(EnrollView, self).dispatch(*args, **kwargs)
 
 
-class TeachersView(View):
+class TeachersView(ClassroomView):
     template_name = 'classroom/teachers.html'
 
     def get(self, request, *args, **kwargs):
-        current_dictation = Dictation.objects.get_current_or_default(
-            site=request.site, default_id=kwargs.get('dictation_id', None))
-        teachers = TeacherProfile.objects.filter(dictation=current_dictation).order_by('user__first_name')
+        teachers = TeacherProfile.objects.filter(dictation=self.current_dictation).order_by('user__first_name')
         return render_to_response(
             self.template_name,
             RequestContext(self.request, {
-                'dictation': current_dictation,
+                'dictation': self.current_dictation,
                 'teachers': teachers,
             })
         )
+
+
+class UploadGradesView(ClassroomView):
+    '''
+    class Score(models.Model):
+    assignment = models.ForeignKey(Assignment)
+    enrolled = models.ForeignKey(Enrolled)
+    date = models.DateTimeField(blank=False, null=False)
+    value = models.IntegerField(blank=False, null=False)
+    comment = models.CharField(max_length=255, blank=True, null=True)
+    '''
+    def post(self, request, *args, **kwargs):
+        uploaded_file = ['0420431,TPN1,25', '0420322,TPN1,88', '04202020,TPN1,99']  # Fix me
+
+        for grade in uploaded_file:
+            uuid, assignment_title, score = grade.split(',')
+            Score.objects.create(
+                assignment=Assignment.objects.get(title=assignment_title))

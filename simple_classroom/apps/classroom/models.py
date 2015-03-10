@@ -6,6 +6,7 @@ from django.contrib.sites.models import Site
 from django.db import models
 from django.db.models import Q
 from django.utils.translation import ugettext as _
+from ordered_model.models import OrderedModel
 from tinymce.models import HTMLField
 from simple_classroom.apps.core.models import DropboxStorageMixin
 from simple_classroom.apps.downloads import STORAGE
@@ -111,7 +112,7 @@ class Enrolled(models.Model):
         return u'{0}'.format(self.student_profile)
 
 
-class Assignment(models.Model):
+class Assignment(OrderedModel):
     FINAL = _(u'Final')
     LABORATORY = _(u'Laboratorio')
     MIDTERM = _(u'Parcial')
@@ -142,7 +143,7 @@ class Assignment(models.Model):
     assignment_type = models.IntegerField(_('Tipo'), choices=ASSIGNMENT_TYPES, default=4, null=False, blank=False)
     objects = AssignmentManager()
 
-    class Meta:
+    class Meta(OrderedModel.Meta):
         verbose_name = _(u'Asignación')
         verbose_name_plural = _(u'Asignaciones')
 

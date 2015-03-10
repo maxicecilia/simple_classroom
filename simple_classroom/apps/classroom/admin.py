@@ -1,9 +1,17 @@
 # -*- coding: utf-8 -*-
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
+from ordered_model.admin import OrderedModelAdmin
 from simple_classroom.apps.classroom import models as class_models
 from simple_classroom.apps.classroom.forms import TeacherProfileForm
 from simple_classroom.apps.downloads.admin import DownloadInlineAdmin
+
+
+def order_selected_objects(modeladmin, request, queryset):
+    for index, obj in enumerate(queryset):
+        obj.order = index + 1
+        obj.save()
+order_selected_objects.short_description = _('Ordenar objetos')
 
 
 @admin.register(class_models.StudentProfile)
@@ -47,11 +55,14 @@ class EnrolledAdmin(admin.ModelAdmin):
 
 
 @admin.register(class_models.Assignment)
-class AssignmentAdmin(admin.ModelAdmin):
-    list_display = ('title', 'assignment_type', 'dictation', 'is_published', 'publication_date', 'is_evaluated', 'evaluation_date', 'is_scored', 'score_date')
-    list_filter = ('dictation', 'is_published', )
+class AssignmentAdmin(OrderedModelAdmin):
+    list_display = (
+        'title', 'assignment_type', 'dictation', 'is_published', 'publication_date', 'is_evaluated',
+        'evaluation_date', 'is_scored', 'score_date', 'order', 'move_up_down_links', )
+    list_filter = ('is_published', 'dictation', 'assignment_type', )
     inlines = [DownloadInlineAdmin, ]
     readonly_fields = ('publication_date', 'evaluation_date', 'score_date', )
+    actions = [order_selected_objects]
 
 
 @admin.register(class_models.Score)
