@@ -44,7 +44,7 @@
           <div class="clearfix">
             <div class="col-lg-3">
               {% if profile.avatar %}
-                <img class="img-responsive img-rounded pull-left" src="{{ profile.avatar_url }}" alt="avatar" />
+                <img class="img-responsive img-rounded pull-left" src="{{ profile.get_image_url }}" alt="avatar" />
               {% else %}
                 <img class="img-responsive img-rounded pull-left" src="{% static "img/default_avatar.jpg" %}" alt="default_avatar"/>
               {% endif %}

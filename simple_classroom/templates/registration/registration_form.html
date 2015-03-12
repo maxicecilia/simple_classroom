@@ -2,7 +2,7 @@
 {% load bootstrap3 %}
 
 {% block main-content %}
-<div class="row">
+<div class="row bottom-buffer top-buffer">
     <div class="col-md-6 col-md-offset-2">
         <form action="/accounts/register/" method="POST">
             {% csrf_token %}
