@@ -166,12 +166,12 @@ class Assignment(OrderedModel):
         super(Assignment, self).save(*args, **kwargs)
 
     def get_previous_assignments(self):
-        ''' Returns the assignments for the last 3 previous dictations. '''
+        ''' Returns the assignments for the last 2 previous dictations. '''
         return Assignment.objects.filter(
             is_published=True,
             assignment_type=self.assignment_type,
             title=self.title,
-            dictation__in=Dictation.objects.filter(~Q(pk=self.dictation.pk)).order_by('-year')[:3],
+            dictation__in=Dictation.objects.filter(~Q(pk=self.dictation.pk)).order_by('-year')[:2],
         )
 
     def get_default_download(self):

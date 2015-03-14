@@ -12,6 +12,8 @@
             <th>Fecha Publicado</th>
             <th>Fecha Evaluativo</th>
             <th>Fecha Notas</th>
+            <th>{{ dictation.year }}</th>
+            <th>DC</th>
             {% for old_dictation in previous_dictations %}
                 <th>{{ old_dictation.year }}</th>
                 <th>DC</th>
@@ -29,8 +31,10 @@
         <td>{{ exercise.publication_date|date:"d/m/y"|default:"-" }}</td>
         <td>{{ exercise.evaluation_date|date:"d/m/y"|default:"-" }}</td>
         <td>{{ exercise.score_date|date:"d/m/y"|default:"-" }}</td>
+        <td>{% if exercise.get_default_download %}<a href="{{exercise.get_default_download.data.url}}">{{ exercise.get_default_download }}</a>{% endif %}</td>
+        <td>{% if exercise.is_scored and exercise.evaluation_date %}{{ exercise.evaluation_date.date|timesince:exercise.score_date.date }}{% endif %}</td>
         {% for assig in exercise.get_previous_assignments %}
-            <td>{% if assig.get_default_download %}<a href="assig.get_default_download.data.url">{{ assig.get_default_download }}</a>{% endif %}</td>
+            <td>{% if assig.get_default_download %}<a href="{{assig.get_default_download.data.url}}">{{ assig.get_default_download }}</a>{% endif %}</td>
             <td>{% if assig.is_scored and assig.evaluation_date %}{{ assig.evaluation_date.date|timesince:assig.score_date.date }}{% endif %}</td>
         {% endfor %}
       </tr>
