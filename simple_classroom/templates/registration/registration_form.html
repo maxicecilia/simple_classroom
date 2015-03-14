@@ -4,6 +4,7 @@
 {% block main-content %}
 <div class="row bottom-buffer top-buffer">
     <div class="col-md-6 col-md-offset-2">
+        <h2>Formulario de Registración</h2>
         <form action="/accounts/register/" method="POST">
             {% csrf_token %}
             {% bootstrap_form form %}

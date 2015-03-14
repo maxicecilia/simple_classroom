@@ -11,7 +11,7 @@ from simple_classroom.apps.classroom.models import StudentProfile, TeacherProfil
 class StudentRegistrationForm(RegistrationForm):
     first_name = forms.CharField(label=_(u'Nombre/s'))
     last_name = forms.CharField(label=_(u'Apellido'))
-    cx = forms.CharField(label=_(u'CX'))
+    cx = forms.CharField(label=_(u'CX'), help_text=_(u'Por favor, ingrese el CX sin guiones ni letras.'))
     telephone = forms.CharField(label=_(u'Teléfono'))
 
 
