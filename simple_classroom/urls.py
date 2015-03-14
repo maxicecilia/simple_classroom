@@ -3,6 +3,8 @@ from django.conf import settings
 from django.conf.urls import patterns, include, url
 from django.conf.urls.static import static
 from django.contrib import admin
+from django.contrib.auth import views as auth_views
+from django.views.generic import TemplateView
 
 from simple_classroom.apps.classroom.views import HomeView, ProfileView
 from simple_classroom.apps.classroom.forms import StudentRegistrationForm
@@ -21,6 +23,11 @@ urlpatterns = patterns(
         name='registration_register'),
     (r'^accounts/', include('registration.backends.default.urls')),
 
+    (r'^password/reset/fail/', TemplateView.as_view(template_name="registration/password_reset_fail.html")),
+    url(r'^password/reset/confirm/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$',
+        auth_views.password_reset_confirm, name='password_reset_confirm'),
+    url(r'^password/reset/complete/$',
+        auth_views.password_reset_complete, name='password_reset_complete'),
     # Admin URLs
     url(r'^admin/', include(admin.site.urls)),
     (r'^tinymce/', include('tinymce.urls')),

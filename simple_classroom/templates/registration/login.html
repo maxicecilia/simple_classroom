@@ -13,7 +13,8 @@
                 </button>
             {% endbuttons %}
         </form>
-        <a href="/accounts/register/">¿Todavía no estás registrado?</a>
+        <p><a href="{% url "registration_register" %}">¿Todavía no estás registrado?</a></p>
+        <p><a href="{% url "auth_password_reset" %}">¿Olvidaste tu contraseña?</a></p>
     </div>
 </div>
 {% endblock %}

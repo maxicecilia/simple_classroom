@@ -18,7 +18,7 @@
           <div class="panel-body">
             <ul>
             {% for dictation in available_dictations %}
-                <li>{{ dictation }} <a class='enroll-trigger' href="{% url 'enroll_student' dictation.id profile.id %}">Inscribirme!</a></li>
+                <li>{{ dictation }} <a class='enroll-trigger' href="{% url 'enroll_student' dictation.id profile.id %}" data-name="{{ dictation }}" >Inscribirme!</a></li>
             {% endfor %}
             </ul>
           </div>
@@ -65,12 +65,13 @@
   $(document).ready(function() {
         $('body').on('click', '.enroll-trigger', function(event) {
             event.preventDefault();
+            dictation = $(this).data('name');
             $.ajax({
               type: "POST",
               url: this.href,
               data: {csrfmiddlewaretoken:'{{csrf_token}}'},
               success: function(response) {
-                alert("Se ha inscripto con éxito");
+                alert("Se ha inscripto con éxito al dictado " + dictation);
                 window.location = window.location;
               },
               error: function(response) {
