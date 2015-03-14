@@ -15,8 +15,11 @@ from simple_classroom.apps.classroom.models import Dictation, Enrolled, StudentP
 class ClassroomView(View):
 
     def dispatch(self, *args, **kwargs):
-        self.current_dictation = Dictation.objects.get_current_or_default(
-            site=self.request.site, default_id=kwargs.get('dictation_id', None))
+        try:
+            self.current_dictation = Dictation.objects.get_current_or_default(
+                site=self.request.site, default_id=kwargs.get('dictation_id', None))
+        except:
+            self.current_dictation = None
         return super(ClassroomView, self).dispatch(*args, **kwargs)
 
 
@@ -24,6 +27,8 @@ class HomeView(ClassroomView):
     template_name = 'classroom/home.html'
 
     def get(self, request, *args, **kwargs):
+        if not self.current_dictation:
+            raise Http404
         news = NewsItem.objects_published.get_latest_by_site(site=request.site)
         return render_to_response(
             self.template_name,
