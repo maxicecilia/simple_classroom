@@ -99,7 +99,7 @@ class TeachersView(ClassroomView):
     template_name = 'classroom/teachers.html'
 
     def get(self, request, *args, **kwargs):
-        teachers = TeacherProfile.objects.filter(dictation=self.current_dictation).order_by('user__first_name')
+        teachers = TeacherProfile.objects.filter(dictation=self.current_dictation).order_by('order')
         return render_to_response(
             self.template_name,
             RequestContext(self.request, {

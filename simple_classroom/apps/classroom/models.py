@@ -77,13 +77,13 @@ class Dictation(models.Model):
         super(Dictation, self).save(*args, **kwargs)
 
 
-class TeacherProfile(models.Model, DropboxStorageMixin):
+class TeacherProfile(OrderedModel, DropboxStorageMixin):
     abstract = HTMLField(null=True, blank=True)
     avatar = models.ImageField(_(u'Avatar'), upload_to='avatar', storage=STORAGE, null=True, blank=True)
     dictation = models.ManyToManyField(Dictation, verbose_name=_(u'Dictado'))
     user = models.OneToOneField(User, verbose_name=_(u'Usuario'))
 
-    class Meta:
+    class Meta(OrderedModel.Meta):
         verbose_name = _(u'Profesor')
         verbose_name_plural = _(u'Profesores')
 

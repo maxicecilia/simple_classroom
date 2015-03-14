@@ -24,9 +24,10 @@ class StudentProfileAdmin(admin.ModelAdmin):
 
 
 @admin.register(class_models.TeacherProfile)
-class TeacherProfileAdmin(admin.ModelAdmin):
-    list_display = ('teacher_full_name', )
+class TeacherProfileAdmin(OrderedModelAdmin):
+    list_display = ('teacher_full_name', 'order', 'move_up_down_links', )
     form = TeacherProfileForm
+    actions = [order_selected_objects]
 
     def teacher_full_name(self, obj):
         return obj.user.get_full_name()
