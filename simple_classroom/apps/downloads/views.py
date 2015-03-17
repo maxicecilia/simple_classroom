@@ -73,7 +73,7 @@ class SiteDownloadView(View):
         download_type = SiteDownload.DOWNLOAD_TYPES[int(kwargs.get('download_type'))][1]
         downloads = SiteDownload.objects.filter(
             site=request.site,
-            download_type=kwargs.get('download_type'))
+            download_type=kwargs.get('download_type')).order_by('title')
 
         return render_to_response(
             self.template_name,
