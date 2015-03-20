@@ -107,6 +107,7 @@ class Enrolled(models.Model):
     class Meta:
         verbose_name = _(u'Inscripto')
         verbose_name_plural = _(u'Inscriptos')
+        unique_together = (("student_profile", "dictation"),)
 
     def __unicode__(self):
         return u'{0}'.format(self.student_profile)

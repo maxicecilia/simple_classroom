@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
+import logging
 import datetime
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
-from django.http import Http404, HttpResponseServerError
+from django.http import Http404, HttpResponseServerError, HttpResponseBadRequest
 from django.http import JsonResponse
 from django.shortcuts import render_to_response
 from django.template import RequestContext
@@ -10,6 +11,8 @@ from django.utils.decorators import method_decorator
 from django.views.generic import View
 from site_news.models import NewsItem
 from simple_classroom.apps.classroom.models import Dictation, Enrolled, StudentProfile, TeacherProfile
+
+logger = logging.getLogger(__name__)
 
 
 class ClassroomView(View):
@@ -79,21 +82,28 @@ class ProfileView(View):
 
 class EnrollView(ClassroomView):
     def post(self, request, *args, **kwargs):
+        self.student_id = kwargs.get('student_id')
+        self.validate()  # run validations
         try:
-            student_profile = StudentProfile.objects.get(pk=kwargs.get('student_id'))
             previous_attempts = Enrolled.objects.filter(
-                student_profile=student_profile,
+                student_profile__id=self.student_id,
                 dictation__subject=self.current_dictation.subject,).count()
             enroll = Enrolled.objects.create(
-                student_profile=student_profile,
+                student_profile=StudentProfile.objects.get(pk=self.student_id),
                 dictation=self.current_dictation,
                 date=datetime.datetime.now(),
                 previous_attempts=previous_attempts)
 
             return JsonResponse({'enroll_id': enroll.pk, 'status': 'success'})
         except Exception as e:
-            import traceback; traceback.print_exc();  # TODO: Fix me.
+            logger.excetpion(e)
             return HttpResponseServerError(e.message)
+
+    def validate(self, *args, **kwargs):
+        if Enrolled.objects.filter(
+                student_profile__id=self.student_id,
+                dictation=self.current_dictation).count() > 0:
+            raise HttpResponseBadRequest(u'El usuario ya fue registrado para este dictado.')
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
