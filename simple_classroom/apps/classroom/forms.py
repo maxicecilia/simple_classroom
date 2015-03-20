@@ -2,13 +2,13 @@
 from django import forms
 from django.dispatch import receiver
 from django.utils.translation import ugettext_lazy as _
-from registration.forms import RegistrationForm
+from registration.forms import RegistrationFormUniqueEmail
 from registration.signals import user_registered
 from tinymce.widgets import TinyMCE
 from simple_classroom.apps.classroom.models import StudentProfile, TeacherProfile
 
 
-class StudentRegistrationForm(RegistrationForm):
+class StudentRegistrationForm(RegistrationFormUniqueEmail):
     first_name = forms.CharField(label=_(u'Nombre/s'))
     last_name = forms.CharField(label=_(u'Apellido'))
     cx = forms.CharField(label=_(u'CX'), help_text=_(u'Por favor, ingrese el CX sin guiones ni letras.'))
