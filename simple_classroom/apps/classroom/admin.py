@@ -62,7 +62,7 @@ class AssignmentAdmin(OrderedModelAdmin):
         'evaluation_date', 'is_scored', 'score_date', 'order', 'move_up_down_links', )
     list_filter = ('is_published', 'dictation', 'assignment_type', )
     inlines = [DownloadInlineAdmin, ]
-    readonly_fields = ('publication_date', 'evaluation_date', 'score_date', )
+    # readonly_fields = ('publication_date', 'evaluation_date', 'score_date', )
     actions = [order_selected_objects]
 
 
