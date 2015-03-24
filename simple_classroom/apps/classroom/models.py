@@ -179,7 +179,7 @@ class Assignment(OrderedModel):
         try:
             return self.download_set.get(title=getattr(settings, 'ASSIGNMENT_DEFAULT_DOWNLOAD', 'default'))
         except:
-            return None
+            return self.download_set.all()[0]
 
 
 class Score(models.Model):
