@@ -16,11 +16,33 @@ order_selected_objects.short_description = _('Ordenar objetos')
 
 @admin.register(class_models.StudentProfile)
 class StudentProfileAdmin(admin.ModelAdmin):
-    list_display = ('student_full_name', 'cx', 'telephone')
+    list_display = ('student_last_name', 'student_first_name', 'cx', 'student_email', 'telephone', 'last_dictation')
+    search_fields = ('student_profile__user__last_name', 'student_profile__cx', )
 
-    def student_full_name(self, obj):
-        return obj.user.get_full_name()
-    student_full_name.short_description = _(u'Alumno')
+    def queryset(self, request):
+        qs = super(StudentProfileAdmin, self).queryset(request)
+        qs = qs.order_by('user__last_name', 'user__first_name')
+        return qs
+
+    def student_last_name(self, obj):
+        return obj.user.last_name.title()
+    student_last_name.short_description = _(u'Apellido')
+
+    def student_first_name(self, obj):
+        return obj.user.first_name.title()
+    student_first_name.short_description = _(u'Nombre')
+
+    def student_email(self, obj):
+        return obj.user.email
+    student_email.short_description = _(u'email')
+
+    def last_dictation(self, obj):
+        try:
+            enroll = class_models.Enrolled.objects.filter(student_profile=obj).order_by('-dictation__year')[0]
+            return enroll.dictation
+        except IndexError:
+            return '-'
+    last_dictation.short_description = _(u'última inscripción')
 
 
 @admin.register(class_models.TeacherProfile)
@@ -41,18 +63,43 @@ class SubjectAdmin(admin.ModelAdmin):
 
 @admin.register(class_models.Dictation)
 class DictationAdmin(admin.ModelAdmin):
-    list_display = ('subject', 'year', 'semester', 'date_from', 'date_to')
+    list_display = ('subject', 'year', 'semester', 'is_registration_open', 'enrolled_count', 'dictated_practice_hours', 'dictated_theory_hours', 'last_modification_date', 'date_from', 'date_to', )
     readonly_fields = ('last_modification_date', )
+    list_filter = ('subject', )
+
+    def enrolled_count(self, obj):
+        return class_models.Enrolled.objects.filter(dictation=obj).count()
+    enrolled_count.short_description = _(u'Inscriptos')
 
 
 @admin.register(class_models.Enrolled)
 class EnrolledAdmin(admin.ModelAdmin):
-    list_display = ('student_full_name', 'dictation', )
+    list_display = (
+        'student_last_name', 'student_first_name', 'student_cx',
+        'student_email', 'previous_attempts', 'dictation')
     list_filter = ('dictation', )
+    search_fields = ('student_profile__user__last_name', 'student_profile__cx', )
 
-    def student_full_name(self, obj):
-        return obj.student_profile.user.get_full_name()
-    student_full_name.short_description = _(u'Alumno')
+    def queryset(self, request):
+        qs = super(EnrolledAdmin, self).queryset(request)
+        qs = qs.order_by('student_profile__user__last_name', 'student_profile__user__first_name')
+        return qs
+
+    def student_last_name(self, obj):
+        return obj.student_profile.user.last_name.title()
+    student_last_name.short_description = _(u'Apellido')
+
+    def student_first_name(self, obj):
+        return obj.student_profile.user.first_name.title()
+    student_first_name.short_description = _(u'Nombre')
+
+    def student_cx(self, obj):
+        return obj.student_profile.cx
+    student_cx.short_description = _(u'cx')
+
+    def student_email(self, obj):
+        return obj.student_profile.user.email
+    student_email.short_description = _(u'email')
 
 
 @admin.register(class_models.Assignment)
