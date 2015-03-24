@@ -1,18 +1,19 @@
 # -*- coding: utf-8 -*-
 import logging
 import datetime
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core import urlresolvers
 from django.db.models import Q
-from django.http import Http404, HttpResponseServerError, HttpResponseBadRequest
+from django.http import Http404, HttpResponseServerError, HttpResponseBadRequest, HttpResponseRedirect
 from django.http import JsonResponse
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.utils.decorators import method_decorator
 from django.views.generic import View
 from site_news.models import NewsItem
-from simple_classroom.apps.classroom.models import Dictation, Enrolled, StudentProfile, TeacherProfile
-
-logger = logging.getLogger(__name__)
+from simple_classroom.apps.classroom.models import (
+    Dictation, Enrolled, StudentProfile, TeacherProfile, Assignment, Score)
 
 
 class ClassroomView(View):
@@ -96,7 +97,7 @@ class EnrollView(ClassroomView):
 
             return JsonResponse({'enroll_id': enroll.pk, 'status': 'success'})
         except Exception as e:
-            logger.excetpion(e)
+            logging.excetpion(e)
             return HttpResponseServerError(e.message)
 
     def validate(self, *args, **kwargs):
@@ -124,7 +125,7 @@ class TeachersView(ClassroomView):
         )
 
 
-class UploadGradesView(ClassroomView):
+class UploadScoresView(ClassroomView):
     '''
     class Score(models.Model):
     assignment = models.ForeignKey(Assignment)
@@ -134,9 +135,35 @@ class UploadGradesView(ClassroomView):
     comment = models.CharField(max_length=255, blank=True, null=True)
     '''
     def post(self, request, *args, **kwargs):
-        uploaded_file = ['0420431,TPN1,25', '0420322,TPN1,88', '04202020,TPN1,99']  # Fix me
+        assignment_id = kwargs.get('assignment_id')
+        uploaded_file = request.FILES['upfile']
+        failed_uuid = ''
+        uploaded_grades = 0
 
+        assignment = Assignment.objects.get(pk=int(assignment_id))
         for grade in uploaded_file:
-            uuid, assignment_title, score = grade.split(',')
-            Score.objects.create(
-                assignment=Assignment.objects.get(title=assignment_title))
+            uuid, score = grade.split(',')
+            try:
+                enrolled = Enrolled.objects.get(
+                    student_profile__cx=uuid, dictation=assignment.dictation)
+                Score.objects.create(
+                    assignment=assignment,
+                    enrolled=enrolled,
+                    date=datetime.date.today(),
+                    value=score,
+                    comment='', )
+                uploaded_grades += 1
+            except Enrolled.DoesNotExist as e:
+                failed_uuid += '{},'.format(uuid)
+                logging.debug(e)
+                logging.error('Couldnt find student {}'.format(uuid))
+
+        messages.add_message(
+            request, messages.SUCCESS,
+            u'Se cargaron {} notas para la asignación {}.'.format(uploaded_grades, assignment.title))
+        if failed_uuid != '':
+            messages.add_message(
+                request, messages.ERROR, u'Estudiantes no encontrados: {}'.format(failed_uuid))
+
+        return HttpResponseRedirect(urlresolvers.reverse(
+            'admin:classroom_assignment_change', args=(assignment_id,)))
