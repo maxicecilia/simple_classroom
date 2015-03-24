@@ -1,5 +1,5 @@
 {% extends "core/base.html" %}
-{% load daysince %}
+{% load daysince staticfiles %}
 
 {% block main-content %}
     <div class="page-header">
@@ -32,16 +32,32 @@
         <td>{{ exercise.description }}</td>
         <td>
         {% for download in exercise.download_set.all %}
-            {% if exercise.is_published %}<a href="{{download.data.url}}">{{ download.title }}</a>{% endif %}
+            {% if exercise.is_published %}
+              <a title="{{ download.title }}" href="{{download.data.url}}">
+                <img src="{% static download.get_icon_path %}" width="24" height="24">
+              </a>
+            {% endif %}
         {% endfor %}
         </td>
         <td>{{ exercise.publication_date|date:"d/m/y"|default:"-" }}</td>
         <td>{{ exercise.evaluation_date|date:"d/m/y"|default:"-" }}</td>
         <td>{{ exercise.score_date|date:"d/m/y"|default:"-" }}</td>
-        <td>{% if exercise.get_default_download %}<a href="{{exercise.get_default_download.data.url}}">{{ exercise.get_default_download }}</a>{% endif %}</td>
+        <td>
+          {% if exercise.get_default_download %}
+            <a title="{{ exercise.get_default_download }}" href="{{exercise.get_default_download.data.url}}">
+              <img src="{% static exercise.get_default_download.get_icon_path %}">
+            </a>
+          {% endif %}
+        </td>
         <td>{% if exercise.is_scored and exercise.evaluation_date %}{{ exercise.evaluation_date.date|daysince:exercise.score_date.date }}{% endif %}</td>
         {% for assig in exercise.get_previous_assignments %}
-            <td>{% if assig.get_default_download %}<a href="{{assig.get_default_download.data.url}}">{{ assig.get_default_download }}</a>{% endif %}</td>
+            <td>
+              {% if assig.get_default_download %}
+                <a title="{{ assig.get_default_download }}" href="{{assig.get_default_download.data.url}}">
+                  <img src="{% static assig.get_default_download.get_icon_path %}" width="24" height="24">
+                </a>
+              {% endif %}
+            </td>
             <td>{% if assig.is_scored and assig.evaluation_date %}{{ assig.evaluation_date.date|daysince:assig.score_date.date }}{% endif %}</td>
         {% endfor %}
       </tr>

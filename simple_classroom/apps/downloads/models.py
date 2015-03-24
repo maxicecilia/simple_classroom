@@ -28,9 +28,22 @@ class Download(models.Model):
     class Meta:
         verbose_name = _(u'Descarga')
         verbose_name_plural = _(u'Descargas')
+        ordering = ('upload_date', )
 
     def __unicode__(self):
         return u'{}'.format(self.title)
+
+    def get_icon_path(self):
+        if self.title.lower() == 'evaluativo':
+            return 'img/clipboard_edit.png'
+        elif self.title.lower() == 'guia':
+            return 'img/file.png'
+        elif self.title.lower() == 'dictado':
+            return 'img/file_powerpoint.png'
+        elif self.title.lower() == 'enunciado':
+            return 'img/file_edit.png'
+        else:
+            return 'img/file.png'
 
 
 class CategoryDownload(models.Model):
