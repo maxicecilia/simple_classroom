@@ -1,10 +1,11 @@
 {% extends "core/base.html" %}
+{% load daysince %}
 
 {% block main-content %}
     <div class="page-header">
         <h1>{{ dictation }}<br/></h1>
     </div>
-    <table class="table table-striped table-bordered table-condensed">
+    <table id="table-exercises" class="table table-striped table-bordered table-condensed">
         <thead>
         <tr>
             <th class="text-center" rowspan="2">Práctico</th>
@@ -18,10 +19,10 @@
             <th>Evaluación</th>
             <th>Corrección</th>
             <th>{{ dictation.year }}</th>
-            <th>DC</th>
+            <th title="Cantidad de días" >DC</th>
             {% for old_dictation in previous_dictations %}
                 <th>{{ old_dictation.year }}</th>
-                <th>DC</th>
+                <th title="Cantidad de días">DC</th>
             {% endfor %}
         </tr>
         </thead>
@@ -38,21 +39,19 @@
         <td>{{ exercise.evaluation_date|date:"d/m/y"|default:"-" }}</td>
         <td>{{ exercise.score_date|date:"d/m/y"|default:"-" }}</td>
         <td>{% if exercise.get_default_download %}<a href="{{exercise.get_default_download.data.url}}">{{ exercise.get_default_download }}</a>{% endif %}</td>
-        <td>{% if exercise.is_scored and exercise.evaluation_date %}{{ exercise.evaluation_date.date|timesince:exercise.score_date.date }}{% endif %}</td>
+        <td>{% if exercise.is_scored and exercise.evaluation_date %}{{ exercise.evaluation_date.date|daysince:exercise.score_date.date }}{% endif %}</td>
         {% for assig in exercise.get_previous_assignments %}
             <td>{% if assig.get_default_download %}<a href="{{assig.get_default_download.data.url}}">{{ assig.get_default_download }}</a>{% endif %}</td>
-            <td>{% if assig.is_scored and assig.evaluation_date %}{{ assig.evaluation_date.date|timesince:assig.score_date.date }}{% endif %}</td>
+            <td>{% if assig.is_scored and assig.evaluation_date %}{{ assig.evaluation_date.date|daysince:assig.score_date.date }}{% endif %}</td>
         {% endfor %}
       </tr>
       {% endfor %}
-      <!--
       <tr class="success">
           <td colspan="6" class="text-right">Promedio de Días de Corrección:</td>
-          <td colspan="2" class="text-right">2</td>
-          <td colspan="2" class="text-right">7</td>
-          <td colspan="2" class="text-right">5</td>
+          <td colspan="2" class="text-right" id="current-average-days"></td>
+          <td colspan="2" class="text-right" id="last-average-days"></td>
+          <td colspan="2" class="text-right" id="second-last-average-days"></td>
       </tr>
-      -->
     </table>
 
     <div class="page-header"><h1>Parciales de Años Anteriores</h1></div>
@@ -67,11 +66,36 @@
       {% for midterm in midterms %}
       <tr>
         <td>{{ midterm.title }}</td>
-        <td>{% if midterm.get_default_download %}<a href="midterm.get_default_download.data.url">{{ midterm.get_default_download }}</a>{% endif %}</td>
+        <td>{% if midterm.get_default_download %}<a href="{{midterm.get_default_download.data.url}}">{{ midterm.get_default_download }}</a>{% endif %}</td>
         {% for previous in midterm.get_previous_assignments %}
-            <td>{% if previous.get_default_download %}<a href="previous.get_default_download.data.url">{{ previous.get_default_download }}{% endif %}</td>
+            <td>{% if previous.get_default_download %}<a href="{{previous.get_default_download.data.url}}">{{ previous.get_default_download }}{% endif %}</td>
         {% endfor %}
       </tr>
       {% endfor %}
     </table>
+{% endblock %}
+
+{% block extra_js %}
+  {{ block.super }}
+  <script type="text/javascript">
+    function get_average_for_row(row) {
+      var total = 0, length = 0;
+      $("#table-exercises tr td:nth-child(" + row + ")").each(function(i, data) {
+          var inner_text = $(data).html();
+          var pos = inner_text.indexOf('&');
+          if (pos != -1) {
+            var partial = inner_text.substring(0, pos);
+            total += parseInt(partial);
+            length += 1;          
+          }
+        });
+      return Math.round(total / length);
+    }
+
+    $(document).ready(function() {
+      $('#current-average-days').html(get_average_for_row(8));
+      $('#last-average-days').html(get_average_for_row(10));
+      $('#second-last-average-days').html(get_average_for_row(12));
+    });
+  </script>
 {% endblock %}
