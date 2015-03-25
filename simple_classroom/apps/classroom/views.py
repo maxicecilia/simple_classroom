@@ -64,7 +64,10 @@ class ProfileView(View):
 
         if profile_type == 'student':
             available_dictations = Dictation.objects.filter(~Q(enrolled__student_profile=profile.id), is_registration_open=True)
-            current_enrollments = Enrolled.objects.filter(student_profile=profile.id)
+            current_enrollments = Enrolled.objects.filter(student_profile=profile.id).filter(
+                Q(dictation__date_to__gte=datetime.datetime.now) | Q(dictation__date_to=None))
+            previous_enrollments = Enrolled.objects.filter(
+                student_profile=profile.id, dictation__date_to__lt=datetime.datetime.now)
 
         return render_to_response(
             self.template_name,
@@ -72,7 +75,8 @@ class ProfileView(View):
                 'profile': profile,
                 'profile_type': profile_type,
                 'available_dictations': available_dictations,
-                'current_enrollments': current_enrollments
+                'current_enrollments': current_enrollments,
+                'previous_enrollments': previous_enrollments
             })
         )
 
@@ -146,21 +150,43 @@ class UploadScoresView(ClassroomView):
             try:
                 enrolled = Enrolled.objects.get(
                     student_profile__cx=uuid, dictation=assignment.dictation)
-                Score.objects.create(
-                    assignment=assignment,
-                    enrolled=enrolled,
-                    date=datetime.date.today(),
-                    value=score,
-                    comment='', )
+                try:
+                    score_obj = Score.objects.get(assignment=assignment, enrolled=enrolled)
+                    score_obj.value = score
+                    comment = u'Actualizada el día {}'.format(datetime.datetime.now())
+                    score_obj.save()
+                except Score.DoesNotExist:
+                    Score.objects.create(
+                        assignment=assignment,
+                        enrolled=enrolled,
+                        date=datetime.date.today(),
+                        value=score,
+                        comment='', )
                 uploaded_grades += 1
             except Enrolled.DoesNotExist as e:
                 failed_uuid += '{},'.format(uuid)
                 logging.debug(e)
                 logging.error('Couldnt find student {}'.format(uuid))
 
+        # Add a negative score for all missing scores
+        missing = Enrolled.objects.filter(
+            dictation=assignment.dictation).exclude(
+            student_profile__in=Score.objects.filter(assignment=assignment).values(
+                'enrolled__student_profile__pk'))
+        for missing_enroll in missing:
+            Score.objects.create(
+                assignment=assignment,
+                enrolled=missing_enroll,
+                date=datetime.date.today(),
+                value=-1,
+                comment=u'AUSENTE')
+
         messages.add_message(
             request, messages.SUCCESS,
-            u'Se cargaron {} notas para la asignación {}.'.format(uploaded_grades, assignment.title))
+            u'Se cargaron/actualizaron {} notas para la asignación {}.'.format(uploaded_grades, assignment.title))
+        messages.add_message(
+            request, messages.WARNING,
+            u'Se cargaron {} ausentes para la asignación {}.'.format(missing.count(), assignment.title))
         if failed_uuid != '':
             messages.add_message(
                 request, messages.ERROR, u'Estudiantes no encontrados: {}'.format(failed_uuid))

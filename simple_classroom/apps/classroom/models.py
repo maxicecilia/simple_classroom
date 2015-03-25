@@ -4,6 +4,7 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
 from django.db import models
+from django.db.models import Avg
 from django.db.models import Q
 from django.utils.translation import ugettext as _
 from ordered_model.models import OrderedModel
@@ -195,3 +196,10 @@ class Score(models.Model):
 
     def __unicode__(self):
         return u'{0}-{1}-{2}'.format(self.enrolled.student_profile.user.get_full_name(), self.assignment, self.value)
+
+    def get_average(self):
+        try:
+            average = self.assignment.score_set.exclude(value=-1).aggregate(Avg('value'))['value__avg']
+            return '%.2f' % average
+        except:
+            return ''
