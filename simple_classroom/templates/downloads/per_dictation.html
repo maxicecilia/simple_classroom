@@ -31,7 +31,7 @@
         <td>{{ exercise }}</td>
         <td>{{ exercise.description }}</td>
         <td>
-        {% for download in exercise.download_set.all %}
+        {% for download in exercise.get_resources_for_download %}
             {% if exercise.is_published %}
               <a title="{{ download.title }}" href="{{download.data.url}}">
                 <img src="{% static download.get_icon_path %}" width="24" height="24">

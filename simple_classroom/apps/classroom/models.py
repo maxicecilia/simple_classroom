@@ -182,6 +182,9 @@ class Assignment(OrderedModel):
         except:
             return None
 
+    def get_resources_for_download(self):
+        return self.download_set.filter(~Q(title=getattr(settings, 'ASSIGNMENT_DEFAULT_DOWNLOAD', 'default')))
+
 
 class Score(models.Model):
     assignment = models.ForeignKey(Assignment)
