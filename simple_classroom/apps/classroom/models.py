@@ -22,9 +22,12 @@ class StudentProfile(models.Model):
     class Meta:
         verbose_name = _(u'Estudiante')
         verbose_name_plural = _(u'Estudiantes')
+        ordering = ['user__last_name']
 
     def __unicode__(self):
-        return u'{0}'.format(self.user.get_full_name())
+        return u'{}, {}'.format(
+            self.user.last_name.title(),
+            self.user.first_name.title())
 
 
 class Subject(models.Model):

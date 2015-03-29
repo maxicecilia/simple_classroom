@@ -19,8 +19,8 @@ class StudentProfileAdmin(admin.ModelAdmin):
     list_display = ('student_last_name', 'student_first_name', 'cx', 'student_email', 'telephone', 'last_dictation')
     search_fields = ('student_profile__user__last_name', 'student_profile__cx', )
 
-    def queryset(self, request):
-        qs = super(StudentProfileAdmin, self).queryset(request)
+    def get_queryset(self, request):
+        qs = super(StudentProfileAdmin, self).get_queryset(request)
         qs = qs.order_by('user__last_name', 'user__first_name')
         return qs
 
@@ -80,8 +80,8 @@ class EnrolledAdmin(admin.ModelAdmin):
     list_filter = ('dictation', )
     search_fields = ('student_profile__user__last_name', 'student_profile__cx', )
 
-    def queryset(self, request):
-        qs = super(EnrolledAdmin, self).queryset(request)
+    def get_queryset(self, request):
+        qs = super(EnrolledAdmin, self).get_queryset(request)
         qs = qs.order_by('student_profile__user__last_name', 'student_profile__user__first_name')
         return qs
 
