@@ -45,7 +45,7 @@
         <td>
           {% if exercise.get_default_download %}
             <a title="{{ exercise.get_default_download }}" href="{{exercise.get_default_download.data.url}}">
-              <img src="{% static exercise.get_default_download.get_icon_path %}">
+              <img src="{% static exercise.get_default_download.get_icon_path %}" width="24" height="24">
             </a>
           {% endif %}
         </td>

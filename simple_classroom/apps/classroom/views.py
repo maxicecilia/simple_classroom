@@ -51,6 +51,7 @@ class ProfileView(View):
     def get(self, request, *args, **kwargs):
         available_dictations = None
         current_enrollments = None
+        previous_enrollments = None
         # TODO: Change this to have different views for each profile type. Don't use magic string you filthy muggle.
         try:
             profile = request.user.studentprofile
