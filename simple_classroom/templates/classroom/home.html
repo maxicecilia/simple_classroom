@@ -3,7 +3,7 @@
 {% block main-content %}
     <div class="page-header">
         <h1>Cartelera de Novedades<br/>
-        {% if total_dictated_hours > 0%}
+        {% if total_dictated_hours > 0 %}
           <h4>Hasta el día {{current_dictation.last_modification_date|date:"d/m/y"}}, se dictaron {{current_dictation.dictated_theory_hours }} horas de clase teórica, 
       y {{ current_dictation.dictated_practice_hours }} horas de clase práctica, lo que totaliza <b>{{ total_dictated_hours }} horas</b> en el semestre.</h4>
         {% endif %}
@@ -13,8 +13,8 @@
       {% for article in news %}
       {% if article.published %}
       <tr>
-        <td class="{% if article.date == now %}success{% endif %}">{{ article.date|date:"d/m/y" }}</td>
-        <td class="{% if article.date == now %}success{% endif %}">{{ article.body|safe|default:article.snippet }}</td>
+        <td class="{% if article.date >= now %}success{% endif %}">{{ article.date|date:"d/m/y" }}</td>
+        <td class="{% if article.date >= now %}success{% endif %}">{{ article.body|safe|default:article.snippet }}</td>
       </tr>
       {% endif %}
       {% endfor %}

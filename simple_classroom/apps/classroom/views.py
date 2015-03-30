@@ -38,7 +38,7 @@ class HomeView(ClassroomView):
             self.template_name,
             RequestContext(self.request, {
                 'news': news,
-                'now': datetime.datetime.now().date(),
+                'now': datetime.datetime.now().date() - datetime.timedelta(days=2),
                 'current_dictation': self.current_dictation,
                 'total_dictated_hours': self.current_dictation.get_total_dictated_hours(),
             })
