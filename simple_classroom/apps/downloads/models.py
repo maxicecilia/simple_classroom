@@ -18,7 +18,7 @@ def get_upload_path(instance, filename):
         instance.data.name)
 
 
-class Download(models.Model):
+class Download(models.Model, DropboxStorageMixin):
     ''' TODO: Change this name to a more specific one.'''
     assignment = models.ForeignKey(Assignment)
     title = models.CharField(_(u'Título'), max_length=255, blank=False, null=False)
@@ -32,6 +32,15 @@ class Download(models.Model):
 
     def __unicode__(self):
         return u'{}'.format(self.title)
+
+    def get_data_url(self):
+        try:
+            return self.get_public_url(self.data.url)
+        except:
+            try:
+                return self.data.url
+            except:
+                return ''
 
     def get_icon_path(self):
         if self.title.lower() == 'evaluativo':

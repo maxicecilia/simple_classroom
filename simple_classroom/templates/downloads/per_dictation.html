@@ -33,7 +33,7 @@
         <td>
         {% for download in exercise.get_resources_for_download %}
             {% if exercise.is_published %}
-              <a title="{{ download.title }}" href="{{download.data.url}}">
+              <a title="{{ download.title }}" href="{{download.get_data_url}}">
                 <img src="{% static download.get_icon_path %}" width="24" height="24">
               </a>
             {% endif %}
@@ -44,7 +44,7 @@
         <td>{{ exercise.score_date|date:"d/m/y"|default:"-" }}</td>
         <td>
           {% if exercise.get_default_download %}
-            <a title="{{ exercise.get_default_download }}" href="{{exercise.get_default_download.data.url}}">
+            <a title="{{ exercise.get_default_download }}" href="{{exercise.get_default_download.get_data_url}}">
               <img src="{% static exercise.get_default_download.get_icon_path %}" width="24" height="24">
             </a>
           {% endif %}
@@ -53,7 +53,7 @@
         {% for assig in exercise.get_previous_assignments %}
             <td>
               {% if assig.get_default_download %}
-                <a title="{{ assig.get_default_download }}" href="{{assig.get_default_download.data.url}}">
+                <a title="{{ assig.get_default_download }}" href="{{assig.get_default_download.get_data_url}}">
                   <img src="{% static assig.get_default_download.get_icon_path %}" width="24" height="24">
                 </a>
               {% endif %}
@@ -82,9 +82,9 @@
       {% for midterm in midterms %}
       <tr>
         <td>{{ midterm.title }}</td>
-        <td>{% if midterm.get_default_download %}<a href="{{midterm.get_default_download.data.url}}">{{ midterm.get_default_download }}</a>{% endif %}</td>
+        <td>{% if midterm.get_default_download %}<a href="{{midterm.get_default_download.get_data_url}}">{{ midterm.get_default_download }}</a>{% endif %}</td>
         {% for previous in midterm.get_previous_assignments %}
-            <td>{% if previous.get_default_download %}<a href="{{previous.get_default_download.data.url}}">{{ previous.get_default_download }}{% endif %}</td>
+            <td>{% if previous.get_default_download %}<a href="{{previous.get_default_download.get_data_url}}">{{ previous.get_default_download }}{% endif %}</td>
         {% endfor %}
       </tr>
       {% endfor %}
