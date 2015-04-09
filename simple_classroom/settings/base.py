@@ -43,6 +43,7 @@ INSTALLED_APPS = (
     'django_dropbox',
     'registration',
     'site_news',
+    'contact_us',
     'sitetree',
     'tinymce',
     'ordered_model',
@@ -154,3 +155,7 @@ TINYMCE_DEFAULT_CONFIG = {
 }
 TINYMCE_SPELLCHECKER = False
 TINYMCE_COMPRESSOR = True
+
+CONTACT_US_FORM = {
+    'recipient_list': ['maxicecilia@gmail.com', ]
+}

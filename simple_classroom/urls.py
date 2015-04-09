@@ -5,10 +5,12 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.views.generic import TemplateView
+from contact_us.views import contact_us
+from registration.backends.simple.views import RegistrationView
 
 from simple_classroom.apps.classroom.views import HomeView, ProfileView
 from simple_classroom.apps.classroom.forms import StudentRegistrationForm
-from registration.backends.simple.views import RegistrationView
+
 
 urlpatterns = patterns(
     '',
@@ -34,6 +36,7 @@ urlpatterns = patterns(
 
     # Site URLs
     url(r'^(?P<site>[A-Za-z]*)/$', HomeView.as_view(), name='home'),
+    url(r'^contact_us/', contact_us, name='contact_us'),
 ) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += patterns('django.contrib.flatpages.views',

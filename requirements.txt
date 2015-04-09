@@ -1,4 +1,5 @@
 -e git://github.com/maxicecilia/django_site_news.git@7d320097cedec159e396ad3d223b3919d6449c3e#egg=django_site_news-0.1.1
+-e git://github.com/maxicecilia/django_contact_us.git@ac1af583bd790f323af27a0e42b27a55e8a04398#egg=django_contact_us
 argparse==1.2.1
 django-bootstrap3==5.1.1
 django-dropbox==0.0.2
