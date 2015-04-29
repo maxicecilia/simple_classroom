@@ -39,10 +39,12 @@
                   </thead>
                   <tbody>
                       {% for score in enroll.score_set.all %}
+                      <tr>
                           <td class="text-center">{{ score.assignment }}</td>
                           <td class="text-right">{% if score.value != -1 %}{{ score.value }}{% endif %}</td>
                           <td class="text-right">{{ score.get_average }}</td>
                           <td class="text-center">{{ score.comment }}</td>
+                      </tr>
                       {% endfor %}
                   </tbody>
                 </table>
