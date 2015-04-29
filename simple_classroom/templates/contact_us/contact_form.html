@@ -10,9 +10,10 @@
         <p>Los campos de email y nombre son opcionales.</p>
     </div>
     <div class="col-md-6 col-md-offset-2">
-        <form action="{% url "contact_us" %}" method="POST">
+        <form id="contact-us-form" action="{% url "contact_us" site %}" method="POST">
             {% csrf_token %}
             {% bootstrap_form form %}
+            <input type="hidden" id="next" name="next" value="" />
             {% buttons %}
                 <button type="submit" class="btn btn-default">
                     {% bootstrap_icon "send" %} Enviar
@@ -27,4 +28,12 @@
     </div>
     {% endif %}
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#next').val(getUrlParameter('next'));
+    });
+</script>
 {% endblock %}

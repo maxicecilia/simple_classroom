@@ -156,6 +156,6 @@ TINYMCE_DEFAULT_CONFIG = {
 TINYMCE_SPELLCHECKER = False
 TINYMCE_COMPRESSOR = True
 
-CONTACT_US_FORM = {
-    'recipient_list': ['maxicecilia@gmail.com', ]
-}
+# Contact-us settings
+CONTACT_US_RECIPIENTS_LIST = ['maxicecilia@gmail.com', ]
+CONTACT_US_FORM_STYLE = 'simple'
