@@ -18,6 +18,10 @@ order_selected_objects.short_description = _('Ordenar objetos')
 class StudentProfileAdmin(admin.ModelAdmin):
     list_display = ('student_last_name', 'student_first_name', 'cx', 'student_email', 'telephone', 'last_dictation')
     search_fields = ('student_profile__user__last_name', 'student_profile__cx', )
+    raw_id_fields = ('user', )
+    autocomplete_lookup_fields = {
+        'fk': ['user', ],
+    }
 
     def get_queryset(self, request):
         qs = super(StudentProfileAdmin, self).get_queryset(request)
@@ -79,6 +83,10 @@ class EnrolledAdmin(admin.ModelAdmin):
         'student_email', 'previous_attempts', 'dictation')
     list_filter = ('dictation', )
     search_fields = ('student_profile__user__last_name', 'student_profile__cx', )
+    raw_id_fields = ('student_profile', )
+    autocomplete_lookup_fields = {
+        'fk': ['student_profile', ],
+    }
 
     def get_queryset(self, request):
         qs = super(EnrolledAdmin, self).get_queryset(request)
@@ -104,12 +112,19 @@ class EnrolledAdmin(admin.ModelAdmin):
 
 @admin.register(class_models.Assignment)
 class AssignmentAdmin(OrderedModelAdmin):
+    fieldsets = (
+        (None, {'fields': ('dictation', 'title', 'assignment_type',)}),
+        (None, {'fields': ('description',)}),
+        (None, {'fields': (
+                ('is_published', 'publication_date', ),
+                ('is_evaluated', 'evaluation_date', ),
+                ('is_scored', 'score_date', ))}),
+    )
     list_display = (
         'title', 'assignment_type', 'dictation', 'is_published', 'publication_date', 'is_evaluated',
         'evaluation_date', 'is_scored', 'score_date', 'order', 'move_up_down_links', )
     list_filter = ('is_published', 'dictation', 'assignment_type', )
     inlines = [DownloadInlineAdmin, ]
-    # readonly_fields = ('publication_date', 'evaluation_date', 'score_date', )
     actions = [order_selected_objects]
 
 
@@ -117,6 +132,10 @@ class AssignmentAdmin(OrderedModelAdmin):
 class ScoreAdmin(admin.ModelAdmin):
     list_display = ('student_full_name', 'assignment', 'value', 'comment', 'date')
     list_filter = ('assignment__dictation', 'assignment')
+    raw_id_fields = ('enrolled', 'assignment', )
+    autocomplete_lookup_fields = {
+        'fk': ['enrolled', 'assignment', ],
+    }
 
     def student_full_name(self, obj):
         return obj.enrolled.student_profile.user.get_full_name()

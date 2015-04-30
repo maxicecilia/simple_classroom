@@ -30,6 +30,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = (
+    'grappelli',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -159,3 +160,12 @@ TINYMCE_COMPRESSOR = True
 # Contact-us settings
 CONTACT_US_RECIPIENTS_LIST = ['maxicecilia@gmail.com', ]
 CONTACT_US_FORM_STYLE = 'simple'
+
+# Grappelli
+GRAPPELLI_ADMIN_TITLE = u'Administracion'
+GRAPPELLI_AUTOCOMPLETE_LIMIT = 10
+GRAPPELLI_AUTOCOMPLETE_SEARCH_FIELDS = {
+    "auth": {
+        "user": ("username__icontains", "last_name__icontains", "first_name__icontains",)
+    }
+}

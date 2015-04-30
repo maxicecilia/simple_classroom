@@ -31,6 +31,7 @@ urlpatterns = patterns(
     url(r'^password/reset/complete/$',
         auth_views.password_reset_complete, name='password_reset_complete'),
     # Admin URLs
+    (r'^grappelli/', include('grappelli.urls')),
     url(r'^admin/', include(admin.site.urls)),
     (r'^tinymce/', include('tinymce.urls')),
 

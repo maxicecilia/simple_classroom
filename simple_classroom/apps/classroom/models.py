@@ -29,6 +29,12 @@ class StudentProfile(models.Model):
             self.user.last_name.title(),
             self.user.first_name.title())
 
+    @staticmethod
+    def autocomplete_search_fields():
+        return (
+            "user__last_name__icontains",
+            "user__first_name__icontains",)
+
 
 class Subject(models.Model):
     site = models.OneToOneField(Site)
@@ -116,6 +122,13 @@ class Enrolled(models.Model):
     def __unicode__(self):
         return u'{0}'.format(self.student_profile)
 
+    @staticmethod
+    def autocomplete_search_fields():
+        return (
+            "student_profile__cx__icontains",
+            "student_profile__user__last_name__icontains",
+            "student_profile__user__first_name__icontains",)
+
 
 class Assignment(OrderedModel):
     FINAL = _(u'Final')
@@ -135,7 +148,7 @@ class Assignment(OrderedModel):
     description = models.TextField(_(u'Descripción'), blank=True, null=True)
     is_published = models.BooleanField(
         _(u'Publicado'), blank=False, null=False, default=False,
-        help_text=_(u'Tildar para mostrar la asignación a los inscriptos.'))
+        help_text=_(u'Tildar para mostrar la asignación a los inscriptos en el dictado seleccionado.'))
     publication_date = models.DateTimeField(_(u'Fecha de publicación'), blank=True, null=True)
     is_evaluated = models.BooleanField(
         _(u'Evaluado'), blank=False, null=False, default=False,
@@ -154,6 +167,10 @@ class Assignment(OrderedModel):
 
     def __unicode__(self):
         return u'{}'.format(self.title)
+
+    @staticmethod
+    def autocomplete_search_fields():
+        return ("title__icontains", "dictation__year__icontains", )
 
     def save(self, *args, **kwargs):
         if self.pk is not None:

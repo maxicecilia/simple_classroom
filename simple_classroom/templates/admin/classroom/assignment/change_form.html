@@ -3,10 +3,10 @@
 
 {% block object-tools %}
 {% if change %}{% if not is_popup %}
-  <ul class="object-tools">
+  <ul class="grp-object-tools">
     {% block object-tools-items %}
     <li>
-        <form style="margin: -5px 10px 11px 11px;" method=post enctype="multipart/form-data" action="{% url 'upload-scores' original.pk %}">
+        <form style="margin: 0px 10px 11px 11px;" method=post enctype="multipart/form-data" action="{% url 'upload-scores' original.pk %}">
             {% csrf_token %}
             <input type=file name="upfile"> <input type=submit value="{% trans "Subir Notas" %}">
         </form>
