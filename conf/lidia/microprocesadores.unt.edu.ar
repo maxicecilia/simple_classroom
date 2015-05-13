@@ -1,0 +1,26 @@
+# Virtualmin virtualserver directives -> Include /home/uproc/simple_classroom/conf/lidia/microprocesadores.unt.edu.ar
+SuexecUserGroup "#1000" "#1000"
+ServerName microprocesadores.unt.edu.ar
+ServerAlias www.microprocesadores.unt.edu.ar
+ErrorLog /var/log/virtualmin/microprocesadores.unt.edu.ar_error_log
+CustomLog /var/log/virtualmin/microprocesadores.unt.edu.ar_access_log combined
+
+WSGIDaemonProcess microprocesadores.unt.edu.ar user=uproc group=uproc display-name=uproc threads=15 maximum-requests=10000
+WSGIScriptAlias / /home/uproc/simple_classroom/conf/lidia/wsgi.py
+WSGIProcessGroup microprocesadores.unt.edu.ar
+
+<Directory /home/uproc/simple_classroom>
+	<Files wsgi.py>
+		Require all granted
+	</Files>
+</Directory>
+
+Alias /media/ /home/uproc/simple_classroom/media/
+<Location /media>
+	Require all granted
+</Location>
+
+Alias /static/ /home/uproc/simple_classroom/static/
+<Location /static>
+	Require all granted
+</Location>

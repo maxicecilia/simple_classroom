@@ -22,6 +22,7 @@ Create and setup virtualenv (change paths to your convenience)
 ✗ workok classroom
 ✗ pip install -r requirements.txt
 ✗ django-admin.py migrate
+✗ django-admin.py collectstatic
 ✗ django-admin.py runserver 0.0.0.0:8000
 ```
 
