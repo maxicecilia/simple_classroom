@@ -164,9 +164,10 @@ class Assignment(OrderedModel):
     class Meta(OrderedModel.Meta):
         verbose_name = _(u'Asignación')
         verbose_name_plural = _(u'Asignaciones')
+        ordering = ['-dictation__year', 'title']
 
     def __unicode__(self):
-        return u'{}'.format(self.title)
+        return u'{} ({})'.format(self.title, self.dictation.year)
 
     @staticmethod
     def autocomplete_search_fields():
