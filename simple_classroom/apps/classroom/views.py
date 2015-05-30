@@ -132,65 +132,68 @@ class TeachersView(ClassroomView):
 
 class UploadScoresView(ClassroomView):
     '''
-    class Score(models.Model):
-    assignment = models.ForeignKey(Assignment)
-    enrolled = models.ForeignKey(Enrolled)
-    date = models.DateTimeField(blank=False, null=False)
-    value = models.IntegerField(blank=False, null=False)
-    comment = models.CharField(max_length=255, blank=True, null=True)
+    Upload scores to given assignment.
     '''
     def post(self, request, *args, **kwargs):
         assignment_id = kwargs.get('assignment_id')
-        uploaded_file = request.FILES['upfile']
+        uploaded_file = request.FILES.get('upfile', False)
         failed_uuid = ''
         uploaded_grades = 0
 
-        assignment = Assignment.objects.get(pk=int(assignment_id))
-        for grade in uploaded_file:
-            uuid, score = grade.split(',')
-            try:
-                enrolled = Enrolled.objects.get(
-                    student_profile__cx=uuid, dictation=assignment.dictation)
+        if assignment_id and uploaded_file:
+            assignment = Assignment.objects.get(pk=int(assignment_id))
+            for grade in uploaded_file:
+                uuid, score = grade.split(',')
                 try:
-                    score_obj = Score.objects.get(assignment=assignment, enrolled=enrolled)
-                    score_obj.value = score
-                    comment = u'Actualizada el día {}'.format(datetime.datetime.now())
-                    score_obj.save()
-                except Score.DoesNotExist:
-                    Score.objects.create(
-                        assignment=assignment,
-                        enrolled=enrolled,
-                        date=datetime.date.today(),
-                        value=score,
-                        comment='', )
-                uploaded_grades += 1
-            except Enrolled.DoesNotExist as e:
-                failed_uuid += '{},'.format(uuid)
-                logging.debug(e)
-                logging.error('Couldnt find student {}'.format(uuid))
+                    enrolled = Enrolled.objects.get(
+                        student_profile__cx=uuid, dictation=assignment.dictation)
+                    try:
+                        score_obj = Score.objects.get(assignment=assignment, enrolled=enrolled)
+                        score_obj.value = score
+                        comment = u'Actualizada el día {}'.format(datetime.datetime.now())
+                        score_obj.save()
+                    except Score.DoesNotExist:
+                        Score.objects.create(
+                            assignment=assignment,
+                            enrolled=enrolled,
+                            date=datetime.date.today(),
+                            value=score,
+                            comment='', )
+                    uploaded_grades += 1
+                except Enrolled.DoesNotExist as e:
+                    failed_uuid += '{},'.format(uuid)
+                    logging.debug(e)
+                    logging.error('Couldnt find student {}'.format(uuid))
 
-        # Add a negative score for all missing scores
-        missing = Enrolled.objects.filter(
-            dictation=assignment.dictation).exclude(
-            student_profile__in=Score.objects.filter(assignment=assignment).values(
-                'enrolled__student_profile__pk'))
-        for missing_enroll in missing:
-            Score.objects.create(
-                assignment=assignment,
-                enrolled=missing_enroll,
-                date=datetime.date.today(),
-                value=-1,
-                comment=u'AUSENTE')
+            # Add a negative score for all missing scores
+            missing = Enrolled.objects.filter(
+                dictation=assignment.dictation).exclude(
+                student_profile__in=Score.objects.filter(assignment=assignment).values(
+                    'enrolled__student_profile__pk'))
+            for missing_enroll in missing:
+                Score.objects.create(
+                    assignment=assignment,
+                    enrolled=missing_enroll,
+                    date=datetime.date.today(),
+                    value=-1,
+                    comment=u'AUSENTE')
 
-        messages.add_message(
-            request, messages.SUCCESS,
-            u'Se cargaron/actualizaron {} notas para la asignación {}.'.format(uploaded_grades, assignment.title))
-        messages.add_message(
-            request, messages.WARNING,
-            u'Se cargaron {} ausentes para la asignación {}.'.format(missing.count(), assignment.title))
-        if failed_uuid != '':
             messages.add_message(
-                request, messages.ERROR, u'Estudiantes no encontrados: {}'.format(failed_uuid))
+                request, messages.SUCCESS,
+                u'Se cargaron/actualizaron {} notas para la asignación {}.'.format(
+                    uploaded_grades, assignment.title))
+            messages.add_message(
+                request, messages.WARNING,
+                u'Se cargaron {} ausentes para la asignación {}.'.format(
+                    missing.count(), assignment.title))
+            if failed_uuid != '':
+                messages.add_message(
+                    request, messages.ERROR, u'Estudiantes no encontrados: {}'.format(
+                        failed_uuid))
+        else:
+            messages.add_message(
+                request, messages.ERROR,
+                u'No se pudo procesar las notas. Por favor controle el archivo seleccionado e intente nuevamente')
 
         return HttpResponseRedirect(urlresolvers.reverse(
             'admin:classroom_assignment_change', args=(assignment_id,)))
