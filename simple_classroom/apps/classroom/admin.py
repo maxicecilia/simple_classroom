@@ -138,5 +138,8 @@ class ScoreAdmin(admin.ModelAdmin):
     }
 
     def student_full_name(self, obj):
-        return obj.enrolled.student_profile.user.get_full_name()
+        return u'{}, {}'.format(
+            obj.enrolled.student_profile.user.last_name.title(),
+            obj.enrolled.student_profile.user.first_name.title())
     student_full_name.short_description = _(u'Alumno')
+    student_full_name.admin_order_field = 'enrolled__student_profile__user__last_name'
