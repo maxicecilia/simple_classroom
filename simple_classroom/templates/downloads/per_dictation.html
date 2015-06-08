@@ -28,7 +28,7 @@
         </thead>
       {% for exercise in exercises %}
       <tr>
-        <td>{{ exercise }}</td>
+        <td>{{ exercise.title }}</td>
         <td>{{ exercise.description }}</td>
         <td>
         {% for download in exercise.get_resources_for_download %}

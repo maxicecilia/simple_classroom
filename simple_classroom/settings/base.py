@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.flatpages',
 
+    'memcache_status',
     'bootstrap3',
     'django_dropbox',
     'registration',
@@ -167,5 +168,13 @@ GRAPPELLI_AUTOCOMPLETE_LIMIT = 10
 GRAPPELLI_AUTOCOMPLETE_SEARCH_FIELDS = {
     "auth": {
         "user": ("username__icontains", "last_name__icontains", "first_name__icontains",)
+    }
+}
+
+# Cache
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        'LOCATION': '127.0.0.1:11211',
     }
 }

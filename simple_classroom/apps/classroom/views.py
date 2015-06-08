@@ -52,7 +52,8 @@ class ProfileView(View):
         available_dictations = None
         current_enrollments = None
         previous_enrollments = None
-        # TODO: Change this to have different views for each profile type. Don't use magic string you filthy muggle.
+        # TODO: Change this to have different views for each profile type.
+        # Don't use magic string you filthy muggle.
         try:
             profile = request.user.studentprofile
             profile_type = 'student'
@@ -63,23 +64,29 @@ class ProfileView(View):
             except:
                 raise Http404("Profile not found")
 
+        context = RequestContext(self.request, {
+            'profile': profile,
+            'profile_type': profile_type,
+        })
+
         if profile_type == 'student':
-            available_dictations = Dictation.objects.filter(~Q(enrolled__student_profile=profile.id), is_registration_open=True)
-            current_enrollments = Enrolled.objects.filter(student_profile=profile.id).filter(
-                Q(dictation__date_to__gte=datetime.datetime.now) | Q(dictation__date_to=None))
-            previous_enrollments = Enrolled.objects.filter(
-                student_profile=profile.id, dictation__date_to__lt=datetime.datetime.now)
+            context.update(self._get_student_context(profile))
 
         return render_to_response(
             self.template_name,
-            RequestContext(self.request, {
-                'profile': profile,
-                'profile_type': profile_type,
-                'available_dictations': available_dictations,
-                'current_enrollments': current_enrollments,
-                'previous_enrollments': previous_enrollments
-            })
+            context
         )
+
+    def _get_student_context(self, profile):
+        return {
+            'available_dictations': Dictation.objects.filter(
+                ~Q(enrolled__student_profile=profile.id), is_registration_open=True),
+            'current_enrollments': Enrolled.objects.filter(
+                student_profile=profile.id).filter(
+                Q(dictation__date_to__gte=datetime.datetime.now) | Q(dictation__date_to=None)),
+            'previous_enrollments': Enrolled.objects.filter(
+                student_profile=profile.id, dictation__date_to__lt=datetime.datetime.now)
+        }
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
