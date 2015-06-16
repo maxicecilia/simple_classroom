@@ -3,6 +3,7 @@ import datetime
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
+from django.core.cache import cache
 from django.db import models
 from django.db.models import Avg
 from django.db.models import Q
@@ -174,6 +175,7 @@ class Assignment(OrderedModel):
         return ("title__icontains", "dictation__year__icontains", )
 
     def save(self, *args, **kwargs):
+        cache.clear()  # invalidates caching. TODO: Improve this piece of crap.
         if self.pk is not None:
             orig = Assignment.objects.get(pk=self.pk)
             if orig.is_published != self.is_published and self.is_published is True:
