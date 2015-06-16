@@ -1,10 +1,11 @@
 {% extends "core/base.html" %}
-{% load daysince staticfiles %}
+{% load daysince staticfiles cache %}
 
 {% block main-content %}
     <div class="page-header">
         <h1>{{ dictation }}<br/></h1>
     </div>
+    {% cache 7200 downloads_per_dictation %}
     <table id="table-exercises" class="table table-striped table-bordered table-condensed">
         <thead>
         <tr>
@@ -89,6 +90,7 @@
       </tr>
       {% endfor %}
     </table>
+    {% endcache %}
 {% endblock %}
 
 {% block extra_js %}
