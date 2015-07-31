@@ -19,9 +19,10 @@ Create and setup virtualenv (change paths to your convenience)
 ✗ echo 'cd ~/code/simple_classroom' >> $WORKON_HOME/classroom/bin/postactivate
 ✗ echo 'export DJANGO_SETTINGS_MODULE=simple_classroom.settings' >> $WORKON_HOME/classroom/bin/postactivate
 ✗ echo 'unset DJANGO_SETTINGS_MODULE' >> $WORKON_HOME/classroom/bin/postdeactivate
-✗ workok classroom
+✗ workon classroom
 ✗ pip install -r requirements.txt
 ✗ django-admin.py migrate
+✗ django-admin.py collectstatic
 ✗ django-admin.py runserver 0.0.0.0:8000
 ```
 
