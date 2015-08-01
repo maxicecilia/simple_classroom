@@ -8,7 +8,9 @@ from django.views.generic import TemplateView
 from contact_us.views import ContactUsFormView
 from registration.backends.simple.views import RegistrationView
 
-from simple_classroom.apps.classroom.views import HomeView, ProfileView
+from simple_classroom.apps.classroom.views import HomeView
+from simple_classroom.apps.accounts.views import ProfileView, \
+    StudentProfileView, TeacherProfileView
 from simple_classroom.apps.classroom.forms import StudentRegistrationForm
 
 
@@ -17,15 +19,10 @@ urlpatterns = patterns(
     (r'', include('simple_classroom.apps.classroom.urls')),
     (r'', include('simple_classroom.apps.downloads.urls')),
     (r'', include('simple_classroom.apps.bibliography.urls')),
-    # Accounts URLs
-    url(r'^accounts/profile/$', ProfileView.as_view(), name='profile'),
-    url(
-        r'^accounts/register/$',
-        RegistrationView.as_view(form_class=StudentRegistrationForm),
-        name='registration_register'),
-    (r'^accounts/', include('registration.backends.default.urls')),
+    (r'^accounts/', include('simple_classroom.apps.accounts.urls')),
 
-    (r'^password/reset/fail/', TemplateView.as_view(template_name="registration/password_reset_fail.html")),
+    (r'^password/reset/fail/', TemplateView.as_view(
+        template_name="registration/password_reset_fail.html")),
     url(r'^password/reset/confirm/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$',
         auth_views.password_reset_confirm, name='password_reset_confirm'),
     url(r'^password/reset/complete/$',
