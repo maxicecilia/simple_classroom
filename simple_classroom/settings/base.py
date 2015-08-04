@@ -53,6 +53,7 @@ INSTALLED_APPS = (
     'simple_classroom.apps.classroom',
     'simple_classroom.apps.downloads',
     'simple_classroom.apps.bibliography',
+    'simple_classroom.apps.accounts',
 )
 
 MIDDLEWARE_CLASSES = (

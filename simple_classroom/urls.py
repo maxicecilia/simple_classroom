@@ -6,12 +6,8 @@ from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.views.generic import TemplateView
 from contact_us.views import ContactUsFormView
-from registration.backends.simple.views import RegistrationView
 
 from simple_classroom.apps.classroom.views import HomeView
-from simple_classroom.apps.accounts.views import ProfileView, \
-    StudentProfileView, TeacherProfileView
-from simple_classroom.apps.classroom.forms import StudentRegistrationForm
 
 
 urlpatterns = patterns(
