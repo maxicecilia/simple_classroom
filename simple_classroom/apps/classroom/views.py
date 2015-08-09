@@ -4,7 +4,6 @@ import datetime
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core import urlresolvers
-from django.db.models import Q
 from django.http import Http404, HttpResponseServerError, HttpResponseBadRequest, HttpResponseRedirect
 from django.http import JsonResponse
 from django.shortcuts import render_to_response
@@ -17,7 +16,9 @@ from simple_classroom.apps.classroom.models import (
 
 
 class ClassroomView(View):
-
+    """
+        Adds current dictation to the view instance.
+    """
     def dispatch(self, *args, **kwargs):
         try:
             self.current_dictation = Dictation.objects.get_current_or_default(
@@ -28,6 +29,7 @@ class ClassroomView(View):
 
 
 class HomeView(ClassroomView):
+    """ 127.0.0.1 """
     template_name = 'classroom/home.html'
 
     def get(self, request, *args, **kwargs):
@@ -45,55 +47,10 @@ class HomeView(ClassroomView):
         )
 
 
-class ProfileView(View):
-    template_name = 'classroom/profile.html'
-
-    def get(self, request, *args, **kwargs):
-        available_dictations = None
-        current_enrollments = None
-        previous_enrollments = None
-        # TODO: Change this to have different views for each profile type.
-        # Don't use magic string you filthy muggle.
-        try:
-            profile = request.user.studentprofile
-            profile_type = 'student'
-        except:
-            try:
-                profile = request.user.teacherprofile
-                profile_type = 'teacher'
-            except:
-                raise Http404("Profile not found")
-
-        context = RequestContext(self.request, {
-            'profile': profile,
-            'profile_type': profile_type,
-        })
-
-        if profile_type == 'student':
-            context.update(self._get_student_context(profile))
-
-        return render_to_response(
-            self.template_name,
-            context
-        )
-
-    def _get_student_context(self, profile):
-        return {
-            'available_dictations': Dictation.objects.filter(
-                ~Q(enrolled__student_profile=profile.id), is_registration_open=True),
-            'current_enrollments': Enrolled.objects.filter(
-                student_profile=profile.id).filter(
-                Q(dictation__date_to__gte=datetime.datetime.now) | Q(dictation__date_to=None)),
-            'previous_enrollments': Enrolled.objects.filter(
-                student_profile=profile.id, dictation__date_to__lt=datetime.datetime.now)
-        }
-
-    @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super(ProfileView, self).dispatch(*args, **kwargs)
-
-
 class EnrollView(ClassroomView):
+    """
+        Allows to enroll a student into a dictation.
+    """
     def post(self, request, *args, **kwargs):
         self.student_id = kwargs.get('student_id')
         self.validate()  # run validations
@@ -124,6 +81,9 @@ class EnrollView(ClassroomView):
 
 
 class TeachersView(ClassroomView):
+    """
+        Displays a list of teachers for the current dictation.
+    """
     template_name = 'classroom/teachers.html'
 
     def get(self, request, *args, **kwargs):
@@ -138,9 +98,9 @@ class TeachersView(ClassroomView):
 
 
 class UploadScoresView(ClassroomView):
-    '''
+    """
     Upload scores to given assignment.
-    '''
+    """
     def post(self, request, *args, **kwargs):
         assignment_id = kwargs.get('assignment_id')
         uploaded_file = request.FILES.get('upfile', False)

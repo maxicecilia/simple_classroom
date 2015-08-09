@@ -1,9 +1,9 @@
 {% extends "core/base.html" %}
-{% load staticfiles %}
+{% load staticfiles cache set_var %}
 
 {% block main-content %}
     <div class="page-header">
-        <h2>{{user.last_name|capfirst}}, {{user.first_name|capfirst}}</h2>
+        <h2>{{profile.user.last_name|capfirst}}, {{profile.user.first_name|capfirst}}</h2>
     </div>
     {% if profile_type == "student" %}
         <div class="panel panel-default">
@@ -67,7 +67,7 @@
     {% elif profile_type == "teacher" %}
         <div class="container-fluid">
           <div class="clearfix">
-            <div class="col-lg-3">
+            <div class="col-lg-3" style="margin-bottom: 20px;">
               {% if profile.avatar %}
                 <img class="img-responsive img-rounded pull-left" src="{{ profile.get_image_url }}" alt="avatar" />
               {% else %}
@@ -78,6 +78,28 @@
               {{ profile.abstract|safe }}  
             </div>
           </div>
+		  <div class="panel panel-default">
+			  <div class="panel-heading">Dictados</div>
+			  <div class="panel-body scrollbar-300">
+        {% cache 7200 downloads_per_category %}
+				{% set subject = "" %}
+				{% for enroll in enrollments %}
+					{% if subject != enroll.dictation %}
+						{% if subject %}
+							</ul>
+						{% endif %}
+						{% set subject = enroll.dictation %}
+						<h4>{{ subject }}</h4>
+						<ul>
+					{% endif %}
+					<li><a href="{% url 'profile' enroll.student_profile.id %}">{{ enroll }}</a></li>
+				{% endfor %}
+				{% if subject %}
+					</ul>
+				{% endif %}
+        {% endcache %}
+			  </div>
+		  </div>
         </div>
     {% else %}
         Who am I????

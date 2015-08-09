@@ -72,3 +72,10 @@ div.navbar-collapse {
 .scroll-top a:link,.scroll-top a:visited {
   color:#222;
 } 
+
+/* Force scrollbar*/
+.scrollbar-300 {
+  height:300px;
+  overflow-y:scroll;
+  width:100%;
+}

@@ -12,7 +12,7 @@ from ordered_model.models import OrderedModel
 from tinymce.models import HTMLField
 from simple_classroom.apps.core.models import DropboxStorageMixin
 from simple_classroom.apps.downloads import STORAGE
-from .managers import AssignmentManager, DictationManager
+from .managers import AssignmentManager, DictationManager, EnrolledManager
 
 
 class StudentProfile(models.Model):
@@ -114,6 +114,7 @@ class Enrolled(models.Model):
     dictation = models.ForeignKey(Dictation, null=False, blank=False)
     date = models.DateField()
     previous_attempts = models.IntegerField(default=0)
+    objects = EnrolledManager()
 
     class Meta:
         verbose_name = _(u'Inscripto')
