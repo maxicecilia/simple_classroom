@@ -26,7 +26,7 @@ class ProfileView(AbstractProfileView):
     def get(self, request, *args, **kwargs):
         try:
             request.user.teacherprofile
-            if 'student_id' in kwargs:
+            if 'student_id' in kwargs and kwargs.get('student_id'):
                 return HttpResponseRedirect(reverse(
                     'student-profile',
                     kwargs={'student_id': kwargs.get('student_id')}))
