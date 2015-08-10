@@ -43,7 +43,7 @@ class ProfileView(AbstractProfileView):
 
 
 class TeacherProfileView(AbstractProfileView):
-    template_name = 'classroom/profile.html'
+    template_name = 'accounts/teacher_profile.html'
 
     def __init__(self, *args, **kwargs):
         super(TeacherProfileView, self).__init__(*args, **kwargs)
@@ -59,7 +59,8 @@ class TeacherProfileView(AbstractProfileView):
             'profile': profile,
             'profile_type': self.profile_type,
             'dictations': Dictation.objects.get_open_dictations(),
-            'enrollments': Enrolled.objects.filter(dictation__teacherprofile=profile.id),
+            'enrollments': Enrolled.objects.filter(
+                dictation__teacherprofile=profile.id).order_by('student_profile__user__last_name'),
             'subject': '',
         })
 
@@ -70,6 +71,7 @@ class TeacherProfileView(AbstractProfileView):
 
 
 class StudentProfileView(AbstractProfileView):
+    template_name = 'accounts/student_profile.html'
 
     def __init__(self, *args, **kwargs):
         super(StudentProfileView, self).__init__(*args, **kwargs)

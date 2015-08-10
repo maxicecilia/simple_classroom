@@ -1,0 +1,89 @@
+{% extends "core/base.html" %}
+{% load staticfiles cache set_var %}
+
+{% block main-content %}
+  <div class="page-header">
+      <h2>{{profile.user.last_name|capfirst}}, {{profile.user.first_name|capfirst}}</h2>
+  </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">Información Personal</div>
+      <div class="panel-body">
+        <p>CX: {{profile.cx}}</p>
+        <p>Teléfono: {{profile.telephone}}</p>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">Inscripciones habilitadas</div>
+      <div class="panel-body">
+        <ul>
+        {% for dictation in available_dictations %}
+            <li>{{ dictation }} <a class='enroll-trigger' href="{% url 'enroll_student' dictation.id profile.id %}" data-name="{{ dictation }}" >Inscribirme!</a></li>
+        {% endfor %}
+        </ul>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">Cursados actuales</div>
+      <div class="panel-body">
+        {% for enroll in current_enrollments %}
+            <h4>{{ enroll.dictation }}</h4>
+            <table id="table-scores" class="table table-striped table-bordered table-condensed">
+              <thead>
+              <tr>
+                  <th class="text-center">Práctico</th>
+                  <th class="text-center">Nota</th>
+                  <th class="text-center">Promedio</th>
+                  <th class="text-center">Comentarios</th>
+              </tr>
+              </thead>
+              <tbody>
+                  {% for score in enroll.score_set.all %}
+                  <tr>
+                      <td class="text-center">{{ score.assignment }}</td>
+                      <td class="text-right">{% if score.value != -1 %}{{ score.value }}{% endif %}</td>
+                      <td class="text-right">{{ score.get_average }}</td>
+                      <td class="text-center">{{ score.comment }}</td>
+                  </tr>
+                  {% endfor %}
+              </tbody>
+            </table>
+        {% endfor %}
+      </div>
+    </div>
+    {% if previous_enrollments %}
+    <div class="panel panel-default">
+      <div class="panel-heading">Cursados pasados</div>
+      <div class="panel-body">
+        <ul>
+        {% for enroll in previous_enrollments %}
+            <li>{{ enroll.dictation }}
+            </li>
+        {% endfor %}
+        </ul>
+      </div>
+    </div>
+    {% endif %}
+{% endblock %}
+
+{% block extra_js %}
+<script type="text/javascript">
+  $(document).ready(function() {
+        $('body').on('click', '.enroll-trigger', function(event) {
+            event.preventDefault();
+            dictation = $(this).data('name');
+            $.ajax({
+              type: "POST",
+              url: this.href,
+              data: {csrfmiddlewaretoken:'{{csrf_token}}'},
+              success: function(response) {
+                alert("Se ha inscripto con éxito al dictado " + dictation);
+                window.location = window.location;
+              },
+              error: function(response) {
+                alert("Something went wrong. Please, call 911.");
+              }
+            });
+        });
+    });
+</script>
+{% endblock %}
