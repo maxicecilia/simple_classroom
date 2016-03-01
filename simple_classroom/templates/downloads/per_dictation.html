@@ -21,8 +21,8 @@
             <th>Corrección</th>
             <th>{{ dictation.year }}</th>
             <th title="Cantidad de días" >DC</th>
-            {% for old_dictation in previous_dictations %}
-                <th>{{ old_dictation.year }}</th>
+            {% for year in previous_dictations_years %}
+                <th>{{ year }}</th>
                 <th title="Cantidad de días">DC</th>
             {% endfor %}
         </tr>
@@ -76,16 +76,14 @@
         <thead>
             <th></th>
             <th>{{dictation.year}}</th>
-            {% for old_dictation in previous_dictations %}
-                <th>{{ old_dictation.year }}</th>
-            {% endfor %}            
+            <th colspan="2">Evaluativos anteriores</th>
         </thead>
       {% for midterm in midterms %}
       <tr>
         <td>{{ midterm.title }}</td>
         <td>{% if midterm.get_default_download %}<a href="{{midterm.get_default_download.get_data_url}}">{{ midterm.get_default_download }}</a>{% endif %}</td>
         {% for previous in midterm.get_previous_assignments %}
-            <td>{% if previous.get_default_download %}<a href="{{previous.get_default_download.get_data_url}}">{{ previous.get_default_download }}{% endif %}</td>
+            <td>{% if previous.get_default_download %}<a href="{{previous.get_default_download.get_data_url}}">{{ previous.get_default_download }} {{ previous.dictation.year }}{% endif %}</td>
         {% endfor %}
       </tr>
       {% endfor %}
@@ -104,7 +102,7 @@
           if (pos != -1) {
             var partial = inner_text.substring(0, pos);
             total += parseInt(partial);
-            length += 1;          
+            length += 1;
           }
         });
       return (total / length).toFixed(2);

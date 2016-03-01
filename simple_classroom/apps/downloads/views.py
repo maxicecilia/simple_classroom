@@ -18,7 +18,8 @@ class DownloadsDictationView(View):
         dictation = Dictation.objects.get_current_or_default(
             site=request.site, default_id=kwargs.get('dictation_id', None))
         previous_dictations = Dictation.objects.filter(
-            ~Q(pk=dictation.pk)).order_by('-year')[:2]
+            ~Q(pk=dictation.pk), subject=dictation.subject).order_by('-year')[:2]
+        previous_dictations_years = [previous_dictation.year for previous_dictation in previous_dictations]
         exercises = Assignment.objects.exercises().filter(
             dictation=dictation).order_by('order')
         midterms = Assignment.objects.midterms().filter(
@@ -28,7 +29,7 @@ class DownloadsDictationView(View):
             RequestContext(self.request, {
                 'exercises': exercises,
                 'dictation': dictation,
-                'previous_dictations': previous_dictations,
+                'previous_dictations_years': previous_dictations_years,
                 'midterms': midterms,
             })
         )

@@ -197,7 +197,7 @@ class Assignment(OrderedModel):
             is_published=True,
             assignment_type=self.assignment_type,
             title=self.title,
-            dictation__in=Dictation.objects.filter(~Q(pk=self.dictation.pk))).order_by('-dictation__year')[:2]
+            dictation__in=Dictation.objects.filter(~Q(pk=self.dictation.pk), subject=self.dictation.subject)).order_by('-dictation__year')[:2]
 
     def get_default_download(self):
         ''' Return the default download, you can set the title you want in the settings file. '''
