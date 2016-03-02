@@ -50,7 +50,7 @@
             </a>
           {% endif %}
         </td>
-        <td>{% if exercise.is_scored and exercise.evaluation_date %}{{ exercise.evaluation_date.date|daysince:exercise.score_date.date }}{% endif %}</td>
+        <td>{% if exercise.is_scored and exercise.evaluation_date %}{{ exercise.evaluation_date|daysince:exercise.score_date }}{% endif %}</td>
         {% for assig in exercise.get_previous_assignments %}
             <td>
               {% if assig.get_default_download %}
@@ -59,7 +59,7 @@
                 </a>
               {% endif %}
             </td>
-            <td>{% if assig.is_scored and assig.evaluation_date %}{{ assig.evaluation_date.date|daysince:assig.score_date.date }}{% endif %}</td>
+            <td>{% if assig.is_scored and assig.evaluation_date %}{{ assig.evaluation_date|daysince:assig.score_date }}{% endif %}</td>
         {% endfor %}
       </tr>
       {% endfor %}
