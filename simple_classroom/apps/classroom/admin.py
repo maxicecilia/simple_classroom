@@ -17,7 +17,7 @@ order_selected_objects.short_description = _('Ordenar objetos')
 @admin.register(class_models.StudentProfile)
 class StudentProfileAdmin(admin.ModelAdmin):
     list_display = ('student_last_name', 'student_first_name', 'cx', 'student_email', 'telephone', 'last_dictation')
-    search_fields = ('student_profile__user__last_name', 'student_profile__cx', )
+    search_fields = ('user__last_name', 'cx', )
     raw_id_fields = ('user', )
     autocomplete_lookup_fields = {
         'fk': ['user', ],
