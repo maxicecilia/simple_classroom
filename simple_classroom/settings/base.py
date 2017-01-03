@@ -49,6 +49,7 @@ INSTALLED_APPS = (
     'sitetree',
     'tinymce',
     'ordered_model',
+    'snowpenguin.django.recaptcha2',
     'simple_classroom.apps.core',
     'simple_classroom.apps.classroom',
     'simple_classroom.apps.downloads',
@@ -143,6 +144,10 @@ DROPBOX_CONSUMER_SECRET = ''
 DROPBOX_ACCESS_TOKEN = ''
 DROPBOX_ACCESS_TOKEN_SECRET = ''
 
+# ReCaptcha Site and Secret keys.
+RECAPTCHA_PRIVATE_KEY = ''
+RECAPTCHA_PUBLIC_KEY = ''
+
 # Title used to retrieve the default download file.
 ASSIGNMENT_DEFAULT_DOWNLOAD = 'evaluativo'
 
@@ -161,7 +166,7 @@ TINYMCE_COMPRESSOR = True
 
 # Contact-us settings
 CONTACT_US_RECIPIENTS_LIST = ['maxicecilia@gmail.com', ]
-CONTACT_US_FORM_STYLE = 'simple'
+CONTACT_US_FORM_STYLE = 'simplecaptcha'
 
 # Grappelli
 GRAPPELLI_ADMIN_TITLE = u'Administracion'
