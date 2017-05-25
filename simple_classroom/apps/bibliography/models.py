@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from simple_classroom.apps.downloads import STORAGE
 from simple_classroom.apps.classroom.models import Subject
+
+from simple_classroom.apps.downloads import get_storage
+STORAGE = get_storage()
 
 
 class GroupCategory(models.Model):

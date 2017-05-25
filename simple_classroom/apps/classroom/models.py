@@ -10,8 +10,10 @@ from django.db.models import Q
 from django.utils.translation import ugettext as _
 from ordered_model.models import OrderedModel
 from tinymce.models import HTMLField
-from simple_classroom.apps.downloads import STORAGE
 from .managers import AssignmentManager, DictationManager, EnrolledManager
+
+from simple_classroom.apps.downloads import get_storage
+STORAGE = get_storage()
 
 
 class StudentProfile(models.Model):
