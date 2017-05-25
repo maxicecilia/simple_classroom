@@ -11,7 +11,7 @@
         {% if forloop.counter|divisibleby:2 %}
           <div class="col-lg-2">
             {% if teacher.avatar %}
-              <img class="img-responsive img-rounded pull-left" src="{{ teacher.get_image_url }}" alt="avatar" />
+              <img class="img-responsive img-rounded pull-left" src="{{ teacher.default_image.url }}" alt="avatar" />
             {% else %}
               <img class="img-responsive img-rounded pull-left" src="{% static "img/default_avatar.jpg" %}" alt="default_avatar"/>
             {% endif %}
@@ -19,12 +19,12 @@
         {% endif %}
         <div class="well well-lg col-lg-10">
           <h1>{{ teacher.user.get_full_name }} <small><a href="mailto:{{ teacher.user.email }}">{{ teacher.user.email }}</a></small></h1>
-          {{ teacher.abstract|safe }}  
+          {{ teacher.abstract|safe }}
         </div>
         {% if not forloop.counter|divisibleby:2 %}
           <div class="col-lg-2">
             {% if teacher.avatar %}
-              <img class="img-responsive img-rounded pull-left" src="{{ teacher.get_image_url }}" alt="avatar" />
+              <img class="img-responsive img-rounded pull-left" src="{{ teacher.default_image.url }}" alt="avatar" />
             {% else %}
               <img class="img-responsive img-rounded pull-left" src="{% static "img/default_avatar.jpg" %}" alt="default_avatar"/>
             {% endif %}

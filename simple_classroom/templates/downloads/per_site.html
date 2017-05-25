@@ -4,7 +4,7 @@
     <div class="page-header">
         <h1>{{ download_type }}</h1>
     </div>
-    
+
     <table class="table table-striped table-bordered table-condensed">
         <thead>
             <th>Titulo</th>
@@ -13,7 +13,7 @@
       {% for object in site_downloads %}
       <tr>
         <td>{{ object.title|default:"-" }}</td>
-        <td>{% if object.get_image_url %}<a href="{{ object.get_image_url }}">Descarga</a>{% endif %}</td>
+        <td>{% if object.default_image.url %}<a href="{{ object.default_image.url }}">Descarga</a>{% endif %}</td>
       </tr>
       {% endfor %}
     </table>

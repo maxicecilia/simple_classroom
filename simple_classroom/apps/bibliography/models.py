@@ -2,7 +2,6 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from simple_classroom.apps.downloads import STORAGE
-from simple_classroom.apps.core.models import DropboxStorageMixin
 from simple_classroom.apps.classroom.models import Subject
 
 
@@ -19,12 +18,13 @@ class GroupCategory(models.Model):
         return u'{}'.format(self.name)
 
 
-class Book(models.Model, DropboxStorageMixin):
+class Book(models.Model):
     author = models.CharField(_(u'Autor'), max_length=255, null=False, blank=False)
     category = models.ForeignKey(GroupCategory)
     edition = models.CharField(_(u'Edición'), max_length=255, null=False, blank=False)
     editorial = models.CharField(_(u'Editorial'), max_length=255, null=False, blank=False)
-    cover_image = models.ImageField(_(u'Imagen'), upload_to='books', storage=STORAGE, null=True, blank=True)
+    cover_image = models.ImageField(_(u'Imagen'), upload_to='books', storage=STORAGE,
+                                    null=True, blank=True)
     subject = models.ForeignKey(Subject)
     title = models.CharField(_(u'Titulo'), max_length=255, null=False, blank=False)
 

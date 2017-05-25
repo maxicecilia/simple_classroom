@@ -10,7 +10,6 @@ from django.db.models import Q
 from django.utils.translation import ugettext as _
 from ordered_model.models import OrderedModel
 from tinymce.models import HTMLField
-from simple_classroom.apps.core.models import DropboxStorageMixin
 from simple_classroom.apps.downloads import STORAGE
 from .managers import AssignmentManager, DictationManager, EnrolledManager
 
@@ -59,12 +58,17 @@ class Dictation(models.Model):
     subject = models.ForeignKey(Subject)
     date_from = models.DateField(_('Desde'), null=True, blank=True)
     date_to = models.DateField(_('Hasta'), null=True, blank=True)
-    semester = models.IntegerField(_('Semestre'), choices=SEMESTER_CHOICES, default=1, null=False, blank=False)
+    semester = models.IntegerField(_('Semestre'), choices=SEMESTER_CHOICES, default=1,
+                                   null=False, blank=False)
     year = models.IntegerField(_(u'Año'), null=False, blank=False)
-    is_registration_open = models.BooleanField(_(u'Registración abierta'), default=True, null=False, blank=False)
-    dictated_practice_hours = models.PositiveIntegerField(_(u'Horas dictadas de práctica'), default=0, null=False, blank=False)
-    dictated_theory_hours = models.PositiveIntegerField(_(u'Horas dictadas de teoría'), default=0, null=False, blank=False)
-    last_modification_date = models.DateTimeField(_(u'Fecha de última modificación'), null=True, blank=True)
+    is_registration_open = models.BooleanField(_(u'Registración abierta'), default=True,
+                                               null=False, blank=False)
+    dictated_practice_hours = models.PositiveIntegerField(_(u'Horas dictadas de práctica'),
+                                                          default=0, null=False, blank=False)
+    dictated_theory_hours = models.PositiveIntegerField(_(u'Horas dictadas de teoría'),
+                                                        default=0, null=False, blank=False)
+    last_modification_date = models.DateTimeField(_(u'Fecha de última modificación'),
+                                                  null=True, blank=True)
 
     objects = DictationManager()
 
@@ -88,9 +92,10 @@ class Dictation(models.Model):
         super(Dictation, self).save(*args, **kwargs)
 
 
-class TeacherProfile(OrderedModel, DropboxStorageMixin):
+class TeacherProfile(OrderedModel):
     abstract = HTMLField(null=True, blank=True)
-    avatar = models.ImageField(_(u'Avatar'), upload_to='avatar', storage=STORAGE, null=True, blank=True)
+    avatar = models.ImageField(_(u'Avatar'), upload_to='avatar', storage=STORAGE,
+                               null=True, blank=True)
     dictation = models.ManyToManyField(Dictation, verbose_name=_(u'Dictado'))
     user = models.OneToOneField(User, verbose_name=_(u'Usuario'))
 
@@ -160,7 +165,8 @@ class Assignment(OrderedModel):
         _(u'Corregido'), blank=False, null=False, default=False,
         help_text=_(u'Tildar para indicar que la evaluación ya fue corregida y las notas están disponibles.'))
     score_date = models.DateTimeField(_(u'Fecha de Notas'), blank=True, null=True)
-    assignment_type = models.IntegerField(_('Tipo'), choices=ASSIGNMENT_TYPES, default=4, null=False, blank=False)
+    assignment_type = models.IntegerField(_('Tipo'), choices=ASSIGNMENT_TYPES, default=4,
+                                          null=False, blank=False)
     objects = AssignmentManager()
 
     class Meta(OrderedModel.Meta):

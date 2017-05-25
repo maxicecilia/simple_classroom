@@ -129,20 +129,15 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'simple_classroom/static'),
 )
 
-ACCOUNT_ACTIVATION_DAYS = 7  # One-week activation window; you may, of course, use a different value.
+ACCOUNT_ACTIVATION_DAYS = 7  # One-week activation window
 REGISTRATION_AUTO_LOGIN = False  # Automatically log the user in.
 REGISTRATION_OPEN = True
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 
-# Dropbox config
-DROPBOX_CONSUMER_KEY = ''
-DROPBOX_CONSUMER_SECRET = ''
-
 # Token for simple_classroom.
 DROPBOX_ACCESS_TOKEN = ''
-DROPBOX_ACCESS_TOKEN_SECRET = ''
 
 # ReCaptcha Site and Secret keys.
 RECAPTCHA_PRIVATE_KEY = ''

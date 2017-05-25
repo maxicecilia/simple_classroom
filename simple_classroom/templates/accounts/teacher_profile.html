@@ -9,13 +9,13 @@
       <div class="clearfix">
         <div class="col-lg-3" style="margin-bottom: 20px;">
           {% if profile.avatar %}
-            <img class="img-responsive img-rounded pull-left" src="{{ profile.get_image_url }}" alt="avatar" />
+            <img class="img-responsive img-rounded pull-left" src="{{ profile.default_image.url }}" alt="avatar" />
           {% else %}
             <img class="img-responsive img-rounded pull-left" src="{% static "img/default_avatar.jpg" %}" alt="default_avatar"/>
           {% endif %}
         </div>
         <div class="well well-lg col-lg-8">
-          {{ profile.abstract|safe }}  
+          {{ profile.abstract|safe }}
         </div>
       </div>
       <div class="panel panel-default">

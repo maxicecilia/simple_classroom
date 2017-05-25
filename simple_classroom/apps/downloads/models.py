@@ -4,7 +4,6 @@ from django.contrib.sites.models import Site
 from django.db import models
 from django.utils.translation import ugettext as _
 from simple_classroom.apps.classroom.models import Assignment
-from simple_classroom.apps.core.models import DropboxStorageMixin
 from simple_classroom.apps.downloads import STORAGE
 
 
@@ -18,7 +17,7 @@ def get_upload_path(instance, filename):
         instance.data.name)
 
 
-class Download(models.Model, DropboxStorageMixin):
+class Download(models.Model):
     ''' TODO: Change this name to a more specific one.'''
     assignment = models.ForeignKey(Assignment)
     title = models.CharField(_(u'Título'), max_length=255, blank=False, null=False)
@@ -34,13 +33,7 @@ class Download(models.Model, DropboxStorageMixin):
         return u'{}'.format(self.title)
 
     def get_data_url(self):
-        try:
-            return self.get_public_url(self.data.url)
-        except:
-            try:
-                return self.data.url
-            except:
-                return ''
+        return self.data.url
 
     def get_icon_path(self):
         if self.title.lower() == 'evaluativo':
@@ -68,7 +61,7 @@ class CategoryDownload(models.Model):
         return u'{}'.format(self.name)
 
 
-class SiteDownload(models.Model, DropboxStorageMixin):
+class SiteDownload(models.Model):
     ''' All downloads related to the site/subject'''
     SLIDE = _(u'Diapositivas')
     RESOURCE = _(u'Recursos para el alumno')
