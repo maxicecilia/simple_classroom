@@ -1,13 +1,13 @@
--e git://github.com/maxicecilia/django-dropbox.git@0.1.0#egg=django_dropbox
+-e git://github.com/maxicecilia/django-dropbox.git@0.1.1#egg=django_dropbox
 -e git://github.com/maxicecilia/django_site_news.git@7d320097cedec159e396ad3d223b3919d6449c3e#egg=django_site_news-0.1.1
 -e git://github.com/maxicecilia/django_contact_us.git@2.1#egg=django_contact_us
 argparse==1.2.1
 django-bootstrap3==5.1.1
 django-registration-redux==1.1
 django-sitesutils==0.1.2
-django-sitetree==1.2.1
+django-sitetree==1.8.0
 django-tinymce==1.5.3
-Django==1.7.3
+Django==1.8.18
 psycopg2==2.5.4
 ipdb==0.8
 ipython==2.3.1
@@ -16,6 +16,6 @@ urllib3==1.10
 wsgiref==0.1.2
 django-grappelli==2.6.4
 django-memcache-status==1.1
-django-ordered-model==0.4.0
+django-ordered-model==1.4.1
 python-memcached==1.54
-django-recaptcha2==v1.0.0
+django-recaptcha2==1.0.0

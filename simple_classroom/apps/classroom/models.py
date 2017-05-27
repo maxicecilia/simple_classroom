@@ -11,9 +11,7 @@ from django.utils.translation import ugettext as _
 from ordered_model.models import OrderedModel
 from tinymce.models import HTMLField
 from .managers import AssignmentManager, DictationManager, EnrolledManager
-
-from simple_classroom.apps.downloads import get_storage
-STORAGE = get_storage()
+from simple_classroom.apps.downloads import STORAGE
 
 
 class StudentProfile(models.Model):

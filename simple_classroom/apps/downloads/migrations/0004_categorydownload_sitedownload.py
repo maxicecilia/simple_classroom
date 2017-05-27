@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+import django.core.files.storage
 from django.db import models, migrations
 import simple_classroom.apps.downloads
 import simple_classroom.apps.downloads.models
@@ -34,7 +35,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('download_type', models.IntegerField(default=4, verbose_name='Tipo', choices=[(1, 'Diapositivas'), (2, 'Recursos para el alumno'), (3, 'Otros')])),
                 ('title', models.CharField(max_length=255, verbose_name='T\xedtulo')),
-                ('data', models.FileField(storage=simple_classroom.apps.downloads.DropboxStorageDeconstructible(location=b'/simple_classroom'), null=True, upload_to=simple_classroom.apps.downloads.models.get_upload_path, blank=True)),
+                ('data', models.FileField(storage=django.core.files.storage.FileSystemStorage(), null=True, upload_to=simple_classroom.apps.downloads.models.get_upload_path, blank=True)),
                 ('upload_date', models.DateTimeField(auto_now_add=True, verbose_name='Fecha de creaci\xf3n')),
                 ('category', models.ForeignKey(verbose_name='Categor\xeda', to='downloads.CategoryDownload')),
                 ('site', models.ForeignKey(to='sites.Site')),

@@ -4,9 +4,7 @@ from django.contrib.sites.models import Site
 from django.db import models
 from django.utils.translation import ugettext as _
 from simple_classroom.apps.classroom.models import Assignment
-
-from simple_classroom.apps.downloads import get_storage
-STORAGE = get_storage()
+from simple_classroom.apps.downloads import STORAGE
 
 
 def get_upload_path(instance, filename):

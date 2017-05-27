@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+import django.core.files.storage
 from django.db import models, migrations
 import simple_classroom.apps.downloads
 import simple_classroom.apps.downloads.models
@@ -20,13 +21,13 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='download',
             name='data',
-            field=models.FileField(storage=simple_classroom.apps.downloads.DropboxStorageDeconstructible(location=b'/simple_classroom'), null=True, upload_to=b'files', blank=True),
+            field=models.FileField(storage=django.core.files.storage.FileSystemStorage(), null=True, upload_to=b'files', blank=True),
             preserve_default=True,
         ),
         migrations.AlterField(
             model_name='sitedownload',
             name='data',
-            field=models.FileField(storage=simple_classroom.apps.downloads.DropboxStorageDeconstructible(location=b'/simple_classroom'), null=True, upload_to=simple_classroom.apps.downloads.models.get_upload_path, blank=True),
+            field=models.FileField(storage=django.core.files.storage.FileSystemStorage(), null=True, upload_to=simple_classroom.apps.downloads.models.get_upload_path, blank=True),
             preserve_default=True,
         ),
     ]

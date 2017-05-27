@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+import django.core.files.storage
 from django.db import models, migrations
 import simple_classroom.apps.downloads.models
 
@@ -17,7 +18,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('title', models.CharField(max_length=255, verbose_name='T\xedtulo')),
-                ('data', models.FileField(storage=simple_classroom.apps.downloads.DropboxStorageDeconstructible(), null=True, upload_to=b'files', blank=True)),
+                ('data', models.FileField(storage=django.core.files.storage.FileSystemStorage(), null=True, upload_to=b'files', blank=True)),
                 ('upload_date', models.DateTimeField(auto_now_add=True, verbose_name='Fecha de creaci\xf3n')),
                 ('assignment', models.ForeignKey(to='classroom.Assignment')),
             ],

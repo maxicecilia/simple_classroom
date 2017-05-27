@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+import django.core.files.storage
 from django.db import models, migrations
 import simple_classroom.apps.downloads
 
@@ -19,7 +20,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='teacherprofile',
             name='avatar',
-            field=models.ImageField(storage=simple_classroom.apps.downloads.DropboxStorageDeconstructible(location=b'/simple_classroom'), upload_to=b'avatar', null=True, verbose_name='Avatar', blank=True),
+            field=models.ImageField(storage=django.core.files.storage.FileSystemStorage(), upload_to=b'avatar', null=True, verbose_name='Avatar', blank=True),
             preserve_default=True,
         ),
     ]
