@@ -1,4 +1,4 @@
--e git://github.com/maxicecilia/django-dropbox.git@0.1.2#egg=django_dropbox
+-e git://github.com/andres-torres-marroquin/django-dropbox.git@0.1.1#egg=django_dropbox
 -e git://github.com/maxicecilia/django_site_news.git@7d320097cedec159e396ad3d223b3919d6449c3e#egg=django_site_news-0.1.1
 -e git://github.com/maxicecilia/django_contact_us.git@2.1#egg=django_contact_us
 argparse==1.2.1
@@ -19,3 +19,4 @@ django-memcache-status==1.1
 django-ordered-model==1.4.1
 python-memcached==1.54
 django-recaptcha2==1.0.0
+requests>=2.18.0
